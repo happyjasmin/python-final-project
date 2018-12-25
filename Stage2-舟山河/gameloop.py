@@ -16,33 +16,33 @@ block_color = ( 53, 115, 255)
 
 
 class mainCharacter():
-	def __init__(self,x,y,width,height,img):
+	def __init__(self,x,y,width,height):
 		self.x=x
 		self.y=y
 		self.width=width
 		self.height=height
-		self.img=img
+
 		
 class obstacle():
-	def __init__(self,x,y,width,height,movespeed,img):
+	def __init__(self,x,y,width,height,movespeed):
 		self.x=x
 		self.y=y
 		self.width=width
 		self.height=height
 		self.movespeed=movespeed
-		self.img=img
+
 
 def things_dodged(count):
 	font = pygame.font.SysFont(None, 25)
 	text = font.render("dodged" + str(count), True, black)
 	gameDisplay.blit(text,(0,0))
 
-def setMainCharacter(character):
-	gameDisplay.blit(character.img,(character.x,character.y))
+def setMainCharacter(character,img):
+	gameDisplay.blit(img,(character.x,character.y))
 	
-def setObstacle(obstacle,obstaclelist):
-	gameDisplay.blit(obstacle.img,(obstacle.x,obstacle.y))
-	obstaclelist.append(obstacle)
+def setObstacle(obstacle,obstacleSet,img):
+	gameDisplay.blit(img,(obstacle.x,obstacle.y))
+	obstacleSet.add(obstacle)
 
 def text_objects(text, font):
 	textSurface = font.render(text, True, black)
@@ -72,25 +72,32 @@ def end():
 
 def game_loop():
 
-	boatImg = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/boat.png")  ##uploading image
+	boatImg0 = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/boat.png")  ##uploading image
+	boatImg1 = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/boat1.png")
+	boatImg2 = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/boat2.png")
+	boatList=[boatImg0,boatImg1,boatImg2]
+	
 	bikeImg = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/bike.png")
 	peopleImg = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/people.png")	
 	
-	boat = mainCharacter(display_width*0.1 , display_height*0.75 , 100 , 100 , boatImg)  #set status of object
-	bike = obstacle(1280,random.randrange(display_height*320/960, display_height*1-100),100,100,-10,bikeImg)
-	people = obstacle(1280,random.randrange(display_height*320/960, display_height*1-100),100,100,-5,peopleImg)
+	boat = mainCharacter(display_width*0.1 , display_height*0.75 , 100 , 100 )  #set status of object
+	bike = obstacle(1280,random.randrange(display_height*320/960, display_height*1-100),100,100,-10)
+	people = obstacle(1280,random.randrange(display_height*320/960, display_height*1-100),100,100,-5)
 	
 	x_change = 0 #set constent
 	y_change = 0	
 	GPA=4.3
 	dodged=0
-
+	
+	boatImgNum=0	#控制 boat gif fps
+	frame=0 
+	
 	gameExit = False
 	
 	while not gameExit:
 	###########event handling loop###########
 
-		obstacleList=[]
+		obstacleSet=set()
 		
 		for event in pygame.event.get():    #it gets any event that happens...movenment of mouse or clicking etc
 			if event.type == pygame.QUIT:   # when we will click X it will quit the window
@@ -127,11 +134,23 @@ def game_loop():
 
 		gameDisplay.fill(white)
 		
-		setMainCharacter(boat)
-
-		setObstacle(bike,obstacleList)
+		#####################將boatImg 組成gif 並設定幾次畫面(frame)更新會換下一張###################
+		if boatImgNum!=2:                                  
+			setMainCharacter(boat,boatList[boatImgNum])
+			frame+=1
+			if frame == 10:
+				boatImgNum += 1
+				frame=0
+		elif boatImgNum==2:
+			setMainCharacter(boat,boatList[boatImgNum])
+			frame+=1
+			if frame == 10:
+				boatImgNum = 0
+				frame=0
+		
+		setObstacle(bike,obstacleSet,bikeImg)
 		bike.x += bike.movespeed
-		setObstacle(people,obstacleList)
+		setObstacle(people,obstacleSet,peopleImg)
 		people.x += people.movespeed
 		
 		
@@ -140,7 +159,7 @@ def game_loop():
 		
 		
 		if boat.y < display_height*320/960:
-			boat.y = display_height*320/960+boat.height/2	
+			boat.y = display_height*320/960 
 			
 		if boat.y + boat.height> display_height:
 			boat.y = display_height - boat.height
