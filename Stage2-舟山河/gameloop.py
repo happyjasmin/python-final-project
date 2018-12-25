@@ -37,9 +37,12 @@ def things_dodged(count):
 	text = font.render("dodged" + str(count), True, black)
 	gameDisplay.blit(text,(0,0))
 
-def setObject(object):
+def setMainCharacter(character):
+	gameDisplay.blit(character.img,(character.x,character.y))
 	
-	gameDisplay.blit(object.img,(object.x,object.y))
+def setObstacle(obstacle,obstaclelist):
+	gameDisplay.blit(obstacle.img,(obstacle.x,obstacle.y))
+	obstaclelist.append(obstacle)
 
 def text_objects(text, font):
 	textSurface = font.render(text, True, black)
@@ -70,10 +73,12 @@ def end():
 def game_loop():
 
 	boatImg = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/boat.png")  ##uploading image
-	bikeImg=pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/bike.png")
+	bikeImg = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/bike.png")
+	peopleImg = pygame.image.load("D:/SkySpiriT/NTU/PBC/Project/people.png")	
 	
-	boat = mainCharacter(display_width*0.1 , display_height*0.75 , 10 , 10 , boatImg)  #set status of object
-	bike = obstacle(500,random.randrange(display_height*280/960, display_height*1),100,100,-10,bikeImg)
+	boat = mainCharacter(display_width*0.1 , display_height*0.75 , 100 , 100 , boatImg)  #set status of object
+	bike = obstacle(1280,random.randrange(display_height*320/960, display_height*1-100),100,100,-10,bikeImg)
+	people = obstacle(1280,random.randrange(display_height*320/960, display_height*1-100),100,100,-5,peopleImg)
 	
 	x_change = 0 #set constent
 	y_change = 0	
@@ -85,6 +90,8 @@ def game_loop():
 	while not gameExit:
 	###########event handling loop###########
 
+		obstacleList=[]
+		
 		for event in pygame.event.get():    #it gets any event that happens...movenment of mouse or clicking etc
 			if event.type == pygame.QUIT:   # when we will click X it will quit the window
 				logging.info("X is pressed")
@@ -101,7 +108,7 @@ def game_loop():
 					
 				if event.key == pygame.K_UP:#pressing UP arrow will decrease Y-axis coordinate
 					y_change = -7
-					
+
 				if event.key == pygame.K_DOWN:#pressing Down arrow will increase x-axis coordinate
 					y_change = 7
 					
@@ -119,29 +126,53 @@ def game_loop():
 		boat.y += y_change
 
 		gameDisplay.fill(white)
-
-
-		setObject(bike)
-		bike.x += bike.movespeed
 		
-		setObject(boat)
+		setMainCharacter(boat)
+
+		setObstacle(bike,obstacleList)
+		bike.x += bike.movespeed
+		setObstacle(people,obstacleList)
+		people.x += people.movespeed
+		
+		
 		
 		things_dodged(dodged)
-
-		if boat.x > display_width - boat.width or boat.x < 0:
-			end()
-		if boat.y > display_height - boat.height or boat.y < 0:
-			end()
+		
+		
+		if boat.y < display_height*320/960:
+			boat.y = display_height*320/960+boat.height/2	
 			
+		if boat.y + boat.height> display_height:
+			boat.y = display_height - boat.height
+			
+		if boat.x < 0:
+			boat.x = 0
+		
+		if boat.x +boat.width > display_width :
+			boat.x = display_width - boat.width
+		
+		
 		if bike.x < 0:
-			bike.y = random.randrange(display_height*280/960, display_height)
+			bike.y = random.randrange(display_height*320/960, display_height-100)
 			bike.x = 1280
-			bike.movespeed -= 0.5
-
-		###if x < bike.x + bike.width:
+			bike.movespeed -= 0.5	
 			
-			###if y> bike.y and y< bike.y+ bike.height or y+boat_height>thing_starty and y+boat_height<thing_starty+thing_height:
-				###crash()
+		if people.x < 0:
+			people.y = random.randrange(display_height*320/960, display_height-100)
+			people.x = 1280
+			people.movespeed -= 0.5				
+			
+			
+			
+			
+		'''
+		for obstacle in obstacleList:
+
+		if x < bike.x + bike.width:
+			
+			if y> bike.y and y< bike.y+ bike.height or y+boat_height>thing_starty and y+boat_height<thing_starty+thing_height:
+				crash()
+		'''
 		pygame.display.update()
 		clock.tick(60)  ## it will just make thing move faster
 logging.info("calling the game loop")
