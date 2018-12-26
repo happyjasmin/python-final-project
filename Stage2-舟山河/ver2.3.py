@@ -95,6 +95,7 @@ def set_Text(text):
 	now_text_rect=now_text.get_rect()
 	now_text_rect.center=(text.x,text.y)
 	gameDisplay.blit(now_text,now_text_rect.center)
+	pygame.display.update()	
 
 
 def game_loop():
@@ -242,8 +243,8 @@ def game_loop():
 					if crossed_times==1:
 						continue
 					else:
-						changed_gpa="%-10.2f"%(float(now_gpa.text)-0.1) ## 測試0.02是減少最好的
-						now_gpa.text=str(changed_gpa)
+						changed_gpa="%-10.2f"%(float(now_gpa.content)-0.1) ## 測試0.02是減少最好的
+						now_gpa.content=str(changed_gpa)
 						crossed_times+=1
 
 					print("crossed obeject")
