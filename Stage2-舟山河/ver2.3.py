@@ -44,7 +44,7 @@ class figure():
 		self.height=height
 
 
-## this is to display numbers and text, in this case GPA. 
+## this is to display numbers in text, in this case GPA. 
 class text():
 	def __init__(self,content,size,color,x,y):
 
@@ -71,20 +71,6 @@ def set_MainCharacter(character,img):
 def set_Obstacle(obstacle,img):
 	gameDisplay.blit(img,(obstacle.x,obstacle.y))
 	
-'''
-def text_objects(text, font):
-	textSurface = font.render(text, True, black)
-	return textSurface, textSurface.get_rect()
-def message_display(text):
-	largeText = pygame.font.Font("freesansbold.ttf", 115)#font type and size
-	TextSurf, TextRect = text_objects(text, largeText)
-	TextRect.center = ((display_width/2), (display_height/2))
-	gameDisplay.blit(TextSurf, TextRect)
-	pygame.display.update()
-
-	time.sleep(2)
-	game_loop()
-'''
 def set_Figure(figure,img):
 	gameDisplay.blit(img,(figure.x,figure.y))
 
@@ -107,7 +93,7 @@ def game_loop():
 	
 	bikeImg = pygame.image.load("bike.png")
 	peopleImg = pygame.image.load("people.png")	
-	gpaImg= pygame.image.load("GPA2.png")
+	gpaImg= pygame.image.load("GPA.png")
 
 	boat = mainCharacter(display_width*0.1 , display_height*0.75 , 96 , 96 )  #set status of object
 	
@@ -115,7 +101,7 @@ def game_loop():
 	people = obstacle(1280,random.randrange(display_height*320/960, display_height*1-96),96,96,-5)
 	obstaclelist=[bike,people]## estabilish a obstacle list
 	
-	gpa_icon=figure(0,-10,126,40) ## 這裡還要再調，我覺得怪怪的
+	gpa_icon=figure(30,50,96,96) ## 這裡還要再調，我覺得怪怪的
 
 	GPA=4.3
 	# def __init__(self,text,size,color,x,y):
@@ -123,8 +109,6 @@ def game_loop():
 
 	## create ending object
 	ending_message=text("You have failed your semester!",100,red,display_width*(1/2),display_height*(2/3))
-
-
 
 
 	x_change = 0 #set constent
