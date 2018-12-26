@@ -4,7 +4,7 @@ import time
 import random  
 import os
 
-os.chdir('D:/SkySpiriT/NTU/PBC/Project/')
+#os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀檔用
 
 logging.basicConfig(level=logging.DEBUG)
 pygame.init()
