@@ -12,7 +12,7 @@ import random
 import os
 import math
 
-os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
+#os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
 
 logging.basicConfig(level=logging.DEBUG)
 pygame.init()
