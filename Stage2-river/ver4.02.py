@@ -12,7 +12,7 @@ import random
 import os
 import math
 
-# os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
+#os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
 
 logging.basicConfig(level=logging.DEBUG)
 pygame.init()
@@ -162,7 +162,7 @@ def game_loop():
 	boatImg0 = pygame.image.load("boat.png") 
 	boatImg1 = pygame.image.load("boat1.png")
 	boatImg2 = pygame.image.load("boat2.png")
-	boatList=[boatImg0,boatImg1,boatImg2]
+	boatImgList=[boatImg0,boatImg1,boatImg2]
 	
 	# uploading other Images
 	bikeImg = pygame.image.load("bike.png")
@@ -198,7 +198,7 @@ def game_loop():
 	y_change = 0	
 	# dodged=0  ## dodged ; congratulating on dodge??	
 	boatImgNum=0	#控制 boat gif fps
-	frame=0 
+	frame=0 #初始幀數
 
 ### game exit while loop
 	gameExit = False
@@ -209,7 +209,8 @@ def game_loop():
 		set_Text(now_time,"Right")
 		now_time.content="%-10.1f"%(pygame.time.get_ticks()/1000)
 		# print("Game has run for ",float(pygame.time.get_ticks()/1000)," seconds")
-
+		
+		frame+=1 #每跑一次while迴圈幀數+1
 
 		###########event handling loop###########
 		for event in pygame.event.get():    #it gets any event that happens...movenment of mouse or clicking etc
@@ -256,21 +257,19 @@ def game_loop():
 		'''
 		
 		gameDisplay.fill(white)
-		if frame % 20 ==0:				#將river set在 riverDisplay圖層上(每10幀改變一次riverDisplay樣貌)
+		if frame % 20 == 1:				#將river set在 riverDisplay圖層上(每10幀改變一次riverDisplay樣貌)
 			set_River(riverDisplay,20,20,Colorlist)	
 		gameDisplay.blit(riverDisplay, (0,320)) #再將riverDisplay放在gameDisplay圖層
 		
 		
 		#####################將boatImg 組成gif 並設定幾次畫面(frame)更新會換下一張###################
 		if boatImgNum!=2:                                  
-			set_MainCharacter(boat,boatList[boatImgNum])
-			frame+=1
-			if frame % 10 == 0:
+			set_MainCharacter(boat,boatImgList[boatImgNum])
+			if frame % 10 == 0:     #每10幀數換下一張圖片
 				boatImgNum += 1
 
 		elif boatImgNum==2:
-			set_MainCharacter(boat,boatList[boatImgNum])
-			frame+=1
+			set_MainCharacter(boat,boatImgList[boatImgNum])
 			if frame % 10 == 0:
 				boatImgNum = 0
 
