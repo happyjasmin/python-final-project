@@ -162,7 +162,7 @@ def Opening_Trailer():
 	
 	button = figure(720,510,192,96)
 	startText= text('press Space to start',20,red,640,780)
-	introText=text('Dodge all the three treasures!',20,red,420,510)
+	introText=text('Dodge all the three treasures!',28,white,420,600)
 	
 	stage2Img = pygame.image.load("stage2.png") 
 	stage2Img = pygame.transform.scale(stage2Img, (500, 400))
