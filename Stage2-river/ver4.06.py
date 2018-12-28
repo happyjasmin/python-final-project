@@ -12,7 +12,7 @@ import random
 import os
 import math
 
-#os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
+os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
 
 logging.basicConfig(level=logging.DEBUG)
 pygame.init()
@@ -291,16 +291,17 @@ def game_loop():
 	hpbarImg = pygame.image.load("HPbar.png")
 	endlineImg = pygame.image.load("endline.png")
 	backgroundImg = pygame.image.load("background.png")
-	backgroundImg = pygame.transform.scale(backgroundImg, (1280, 320))
+	backgroundImg = pygame.transform.scale(backgroundImg, (480, 320))
 
 
 
 	# defining Objects
 
 	#define background
-	background=figure(0,0,1280,320)
-	background2=figure(1280,0,1280,320)
-
+	background=figure(0,0,480,320)
+	background2=figure(450,0,480,320)
+	background3=figure(900,0,480,320)
+	background4=figure(1350,0,480,320)
 	# main character objects
 	boat = mainCharacter(display_width*0.1 , display_height*0.75 , 96 , 96 )  #set status of object
 
@@ -403,14 +404,22 @@ def game_loop():
 		gameDisplay.fill(white)
 		
 		background.set(backgroundImg)
-		background.x-=10
-		if background.x < -1280:
+		background.x-=5
+		if background.x < -480:
 			background.x =1280
 		background2.set(backgroundImg)
-		background2.x-=10
-		if background2.x < -1280:
+		background2.x-=5
+		if background2.x < -480:
 			background2.x =1280
-		
+		background3.set(backgroundImg)
+		background3.x-=5
+		if background3.x < -480:
+			background3.x =1280
+		background4.set(backgroundImg)
+		background4.x-=5
+		if background2.x < -480:
+			background2.x =1280
+			
 		if frame % 20 == 1:				#將river set在 riverDisplay圖層上(每10幀改變一次riverDisplay樣貌)
 			set_River(riverDisplay,20,20,Colorlist)	
 		gameDisplay.blit(riverDisplay, (0,320)) #再將riverDisplay放在gameDisplay圖層
