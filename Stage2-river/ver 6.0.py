@@ -135,15 +135,6 @@ def set_to_origin(objects,change_speed_x,change_speed_y): ## defines area that t
 
 
 
-'''
-def flash():
-	set_MainCharacter(nothing,nothingImg)
-'''
-
-
-
-
-
 def Opening_Trailer():
 
 	stage2 = obstacle(1280,180,192,96,-30)
@@ -242,10 +233,8 @@ def	Failure_screen():
 
 
 
-
-
 def game_loop():
-	Opening_Trailer()
+	#Opening_Trailer()
 	## play song
 	## https://nerdparadise.com/programming/pygame/part3
 	print("play music")
@@ -312,9 +301,10 @@ def game_loop():
 	## create ending object
 	ending_message=text("You have failed your semester!",80,red,display_width*(1/2),display_height*(2/3))
 	
-
-
+	## create clock now_time on right upper corner.
 	now_time=text(str(0.0),60,black,display_width,0)
+
+
 	## create ending object of game 
 	endline=obstacle(display_width,display_height*(1/3),100,display_height*2/3,-4) # width 暫設50 px 
 
@@ -367,19 +357,19 @@ def game_loop():
 			################This event will handle situation when ever any key will be pressed ##################################
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:#pressing left arrow will decrease x-axis coordinate
-					x_change = -7
+					x_change = -15
 					wave.play()
 					
 				if event.key == pygame.K_RIGHT:#pressing right arrow will increase x-axis coordinate
-					x_change = 7
+					x_change = 15
 					wave.play()
 					
 				if event.key == pygame.K_UP:#pressing UP arrow will decrease Y-axis coordinate
-					y_change = -7
+					y_change = -15
 					wave.play()
 
 				if event.key == pygame.K_DOWN:#pressing Down arrow will increase x-axis coordinate
-					y_change = 7
+					y_change = 15
 					wave.play()
 					
 			################This event will handle situation when ever any key will be released ##################################
@@ -497,17 +487,6 @@ def game_loop():
 		set_to_origin(dino,0.1,0)
 
 
-		#endline=obstacle(display_width,display_height*(1/3),100,display_height*2/3,-4) # width 暫設50 px 
-		if (pygame.time.get_ticks()/1000)>=60.0: # >60s 就讓最後一條線進來，撐過一分鐘就成功
-			# print("endline is appearing................")
-			endline.set(endlineImg)
-			#endline.x += endline.movespeed
-			if endline.x <= display_width/2:
-				endline.x = display_width/2
-			else:
-				endline.x += endline.movespeed
-
-
 		#根據gpa 每0.5顯示一格hpbar
 		# figure(self,x,y,width,height):
 		for i in range(0,int(math.floor(float(now_gpa.content)/0.5))):
@@ -595,11 +574,16 @@ def game_loop():
 
 
 		## set time on right upper field
+		now_time.set("Right")
 		dt=clock.tick(60)/1000
 		time_running += dt
 		now_time.content="%-10.1f"%(time_running)
 
 		print("Game has run for ",time_running," seconds")
+		#print("get_ticks is running for",float(pygame.time.get_ticks()/1000)," seconds")
+
+
+
 
 		if time_running>50:
 			now_time.color=red
@@ -608,11 +592,24 @@ def game_loop():
 		now_time.set("Right")
 
 
+		# endline=obstacle(display_width,display_height*(1/3),100,display_height*2/3,-4) # width 暫設50 px 
+		if (time_running)>=60.0: # >60s 就讓最後一條線進來，撐過一分鐘就成功
+			print("endline is appearing................")
+			endline.set(endlineImg)
+			#endline.x += endline.movespeed
+			if endline.x <= display_width/2:
+				endline.x = display_width/2
+			else:
+				endline.x += endline.movespeed
+
+
 
 		## updating pygame display
 
 		pygame.display.update()
 		clock.tick(60)  ## update 60 frames per second
+
+Opening_Trailer()
 game_loop()
 
 pygame.quit()
