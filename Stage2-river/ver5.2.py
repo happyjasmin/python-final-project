@@ -1,10 +1,3 @@
-## 12/26
-# 1. 碰撞bug修正，如果在上面會扣分，撞到會扣分，obstacle在下面不會扣分
-
-# 2. 碰到obstacle，boat 會閃，且如果再撞到另一個東西，不會扣分
-# 3. 最後, ending message的位置要調整  ; done.
-# 4. 調整人物和障礙物大小與數量 並設計關卡結束條件(稱幾秒會結束)
-
 import logging
 import pygame
 import time
@@ -12,7 +5,7 @@ import random
 import os
 import math
 
-#os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
+# os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
 
 logging.basicConfig(level=logging.DEBUG)
 pygame.init()
@@ -299,15 +292,15 @@ def game_loop():
 	# obstacle objects
 	# special_obstacle (self,x,y,width,height,movespeed_x,movespeed_y,damage):
 	## setting initial velocity for x and y
-	bike2 = special_obstacle(1280,random.randrange(display_height*320/960, display_height*1-96),96,96,-10,0,-0.1) # speed: -10
-	people = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-96),96,96,-7,0,-0.4) # speed: -7
+	bike2 = special_obstacle(2500,random.randrange(display_height*320/960, display_height*1-96),96,96,-10,0,-0.1) # speed: -10
+	people = special_obstacle(2000,random.randrange(display_height*320/960,display_height*1-96),96,96,-7,0,-0.4) # speed: -7
 	bike = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-96),96,96,-14,0,-0.1)	
-	bus = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-96),96,96,-50,0,-0.2)# 等等要設成頁面寬	
-	cat = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-96),96,96,-14,0,-0.01)
-	dog = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-96),96,96,-14,0,-0.01)
-	fish = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-96),96,96,-10,random.choice([-25,25]),-0.05)# 往左移10，往上移10，等等可以設random
-	dino = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-96),96,96,-14,random.choice([-20,20]),-0.2)
-	rainbowcat = special_obstacle(1280,random.randrange(display_height*320/960,display_height*1-144),144,144,(-1280/10),0,0)
+	bus = special_obstacle(7000,random.randrange(display_height*320/960,display_height*1-96),192*3,192,-20,0,-0.1)# 等等要設成頁面寬	
+	cat = special_obstacle(3000,random.randrange(display_height*320/960,display_height*1-96),96,96,-14,0,-0.01)
+	dog = special_obstacle(4000,random.randrange(display_height*320/960,display_height*1-96),96,96,-14,0,-0.01)
+	fish = special_obstacle(5000,random.randrange(display_height*320/960,display_height*1-96),96,96,-10,random.choice([-25,25]),-0.05)# 往左移10，往上移10，等等可以設random
+	dino = special_obstacle(6000,random.randrange(display_height*320/960,display_height*1-96),96,96,-14,random.choice([-20,20]),-0.2)
+	rainbowcat = special_obstacle(30000,random.randrange(display_height*320/960,display_height*1-144),144,144,(-1280/10),0,0)
 	# rainbow_cat 144*144
 
 
@@ -353,7 +346,7 @@ def game_loop():
 		pygame.display.update()	
 		time.sleep(0.2)
 	
-	## initial_time
+### initial_time
 	time_running=0
 ### game exit while loop
 	gameExit = False
@@ -501,7 +494,6 @@ def game_loop():
 		set_to_origin(dog,0.01,0)
 		set_to_origin(fish,0.01,0)
 		set_to_origin(dino,0.1,0)
-		set_to_origin(rainbowcat,0.5,0)
 
 
 		#endline=obstacle(display_width,display_height*(1/3),100,display_height*2/3,-4) # width 暫設50 px 
@@ -616,9 +608,7 @@ def game_loop():
 
 
 
-
-
-
+		## updating pygame display
 
 		pygame.display.update()
 		clock.tick(60)  ## update 60 frames per second
