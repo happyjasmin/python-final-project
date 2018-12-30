@@ -5,7 +5,7 @@ import random
 import os
 import math
 
-# os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
+#os.chdir('D:/SkySpiriT/NTU/PBC/Project/') #讀取檔案目錄
 
 logging.basicConfig(level=logging.DEBUG)
 pygame.init()
@@ -127,11 +127,12 @@ def correction(objects,proportion): ## defines area that the object can operate
 		objects.x = display_width - objects.width
 
 def set_to_origin(objects,change_speed_x,change_speed_y): ## defines area that the object can operate
-	if objects.x < 0:
+	if objects.x < 0-objects.width:
 		objects.y = random.randrange(display_height*320/960, display_height-objects.height)
-		objects.x = display_width
+		objects.x = random.randrange(1280,3200)
 		objects.movespeed -= change_speed_x
 		objects.movespeed_y -= change_speed_y
+
 
 
 '''
@@ -267,7 +268,7 @@ def game_loop():
 	fishImg = pygame.image.load("fish.png")
 	dinoImg = pygame.image.load("dino.png")
 	rainbowcatImg = pygame.image.load("rainbowcat.png")  
-
+	busImg = pygame.transform.scale(busImg, (192*3, 192))
 
 
 	# uploading other Images
