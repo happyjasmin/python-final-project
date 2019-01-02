@@ -7,6 +7,7 @@
 
 #按鈕改傅鐘
 #背景是鐘架子
+#設大笨鳥做為提示
 
 import os
 import pygame
@@ -37,6 +38,8 @@ pas		= pygame.image.load("object\\pass.png")
 sky 	= pygame.image.load("object\\sky.png")
 background 	= pygame.image.load("object\\fubell.png")
 
+hint0	= pygame.image.load("object\\blue.png")
+hint1	= pygame.image.load("object\\orange.png")
 
 fail = pygame.transform.scale(fail,(100,100))
 
@@ -61,6 +64,7 @@ keys = [False,False,False,False]
 music 	= play
 gamestart = False
 gpa = 4.3
+hint = hint0
 
 
 #樂譜,半拍為單位
@@ -78,7 +82,7 @@ score =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,
 		1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,
 		1,0,1,1,1,0,1,0,1,0,1,0,1,1,1,1,
-		1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1]
+		1,0,1,0,1,0,1,0,1,1,1,1,1,1,1,1,0]
 		
 # 歌詞
 lyric =("臺大的環境　鬱鬱蔥蔥　臺大的氣象　勃勃蓬蓬 "
@@ -112,7 +116,7 @@ while 1 and gpa>0 :
 	
 	#指定中文字體
 	fontc = pygame.font.Font("C:\\Windows\\Fonts\\msjhl.ttc",50)
-	runninglyr = fontc.render(lyric, True, (225, 225, 225))
+	runninglyr = fontc.render(lyric, True, (0, 0, 0))
 	x =480
 
 	
@@ -158,8 +162,11 @@ while 1 and gpa>0 :
 	while gamestart and gpa>0:
 	
 
-		for i in score :
+		for n,i in enumerate(score) :
 			
+			
+			#如果下一拍需要按，hint即變色提示
+			hint = hint1 if score[n+1] == 1 else hint0
 			
 
 			start = time.time()
@@ -170,12 +177,13 @@ while 1 and gpa>0 :
 			screen.blit(background, (100,65))
 			screen.blit(button,(150,0))
 			screen.blit(music, (500,500))
-			screen.blit(life, (0,0))	
+			screen.blit(life, (0,0))
+			screen.blit(hint, (50,50))
 			
 			x -= 40
 		
-			screen.blit(runninglyr, (x, 400))
-			screen.blit(runninglyr, (x + runninglyr.get_width(), 400))
+			screen.blit(runninglyr, (x, 700))
+			screen.blit(runninglyr, (x + runninglyr.get_width(), 700))
 		
 			pygame.display.flip()
 
@@ -247,8 +255,9 @@ while 1 and gpa>0 :
 			screen.blit(button,(150,0))
 			screen.blit(music, (500,500))
 			screen.blit(life, (0,0))			
-			screen.blit(runninglyr, (x, 400))
-			screen.blit(runninglyr, (x + runninglyr.get_width(), 400))
+			screen.blit(runninglyr, (x, 700))
+			screen.blit(runninglyr, (x + runninglyr.get_width(), 700))
+			screen.blit(hint, (50,50))
 
 			pygame.display.flip()
 			
