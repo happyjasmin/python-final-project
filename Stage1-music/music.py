@@ -4,11 +4,18 @@
 #tab讓其他字串在螢幕外
 #顏色標示關鍵字(未解)
 
+
+#按鈕改傅鐘
+#背景是鐘架子
+
+import os
 import pygame
 from pygame.locals import *
 import time
 
 
+
+os.chdir('C:\\Users\\user\\Desktop\\NTU\\107-1\\python\\final')
 
 pygame.init()
 
@@ -20,24 +27,25 @@ pygame.mixer.init()
 
 
 # 物件圖片
-blue  	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\blue.png")
-red   	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\orange.png")
-green 	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\green.png")
-play	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\play.png")
-stop 	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\stop.png")
-fail	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\gameover.png")
-pas	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\pass.png")
+blue  	= pygame.image.load("object\\bell.png")
+red   	= pygame.image.load("object\\bell_press.png")
+green 	= pygame.image.load("object\\bell_miss.png")
+play	= pygame.image.load("object\\play.png")
+stop 	= pygame.image.load("object\\stop.png")
+fail	= pygame.image.load("object\\gameover.png")
+pas		= pygame.image.load("object\\pass.png")
+sky 	= pygame.image.load("object\\sky.png")
+background 	= pygame.image.load("object\\fubell.png")
 
 
 fail = pygame.transform.scale(fail,(100,100))
-# background 	= pygame.image.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\press.png")
 
 
 
 #加聲音
-hit  = pygame.mixer.Sound("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\Air_Woosh_Underwater.wav")
-crash = pygame.mixer.Sound("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\crash.wav")
-song = pygame.mixer.music.load("C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music\\ntu.wav")
+hit  = pygame.mixer.Sound("sound\\Air_Woosh_Underwater.wav")
+crash = pygame.mixer.Sound("sound\\crash.wav")
+song = pygame.mixer.music.load("sound\\ntu.wav")
 
 
 hit.set_volume(100)
@@ -113,7 +121,9 @@ while 1 and gpa>0 :
 		button 	= blue
 		screen.fill(0)
 		
-		screen.blit(button,(550,100))
+		screen.blit(sky, (0,0))
+		screen.blit(background, (100,65))
+		screen.blit(button,(150,0))
 		screen.blit(music, (500,500))
 			
 
@@ -156,7 +166,9 @@ while 1 and gpa>0 :
 			
 			screen.fill(0)
 			button = blue
-			screen.blit(button,(550,100))
+			screen.blit(sky, (0,0))
+			screen.blit(background, (100,65))
+			screen.blit(button,(150,0))
 			screen.blit(music, (500,500))
 			screen.blit(life, (0,0))	
 			
@@ -230,7 +242,9 @@ while 1 and gpa>0 :
 				break
 			
 			screen.fill(0)
-			screen.blit(button,(550,100))	
+			screen.blit(sky, (0,0))
+			screen.blit(background, (100,65))
+			screen.blit(button,(150,0))
 			screen.blit(music, (500,500))
 			screen.blit(life, (0,0))			
 			screen.blit(runninglyr, (x, 400))
@@ -245,8 +259,6 @@ while 1 and gpa>0 :
 				time.sleep(0.74-(time.time()-start))
 				print("%.1f" %gpa)
 
-
-				screen.blit(fail, (500,400))
 				pygame.display.flip()
 
 
