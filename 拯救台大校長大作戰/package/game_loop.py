@@ -4,12 +4,12 @@ import time
 import random  
 import os
 import math
-##################################      for Stage1        #####################################
+##################################    game_loop for Stage1        #####################################
 #def stage1():
 
 
 
-##################################      for Stage2        #####################################
+##################################    game_loop for Stage2        #####################################
 os.chdir('D:/PBC') #package資料夾所在目錄
 from package.Class import mainCharacter,obstacle,special_obstacle,figure,text
 from package.Functions import set_ColorBlock,set_River,collision,correction,set_to_origin
@@ -421,7 +421,7 @@ def stage2():
 		
 		
 		
-##################################      for Stage3        #####################################
+##################################    game_loop for Stage3        #####################################
 #def stage3():
 
 
