@@ -4,7 +4,7 @@ import time
 import random  
 import os
 import math
-os.chdir('D:/PBC/') #package資料夾所在目錄
+os.chdir('D:/PBC') #package資料夾所在目錄
 
 ##################################      for Stage1        #####################################
 #不要寫from sample_module import * 避免名稱衝突沒發現
@@ -12,7 +12,7 @@ os.chdir('D:/PBC/') #package資料夾所在目錄
 ##################################      for Stage2        #####################################
 from package.Class import mainCharacter,obstacle,special_obstacle,figure,text
 from package.Functions import set_ColorBlock,set_River,collision,correction,set_to_origin
-from package.OP_ED import Opening_Trailer2,Failure_screen
+from package.OP_ED import Opening_Trailer1,Opening_Trailer2,Opening_Trailer3,Failure_screen
 from package.game_loop import stage2
 
 ##################################      for Stage3        #####################################
@@ -33,7 +33,7 @@ os.chdir('D:/PBC/Resource') #resource資料夾所在目錄
 #First_scene()
 
 ##################################      for Stage1        #####################################
-#Opening_Trailer1()
+Opening_Trailer1()
 #stage1()
 #Ending_Trailer1()
 
@@ -43,7 +43,7 @@ stage2()
 #Ending_Trailer2()
 
 ##################################      for Stage3        #####################################
-#Opening_Trailer3()
+Opening_Trailer3()
 #stage3()
 #Ending_Trailer3()
 

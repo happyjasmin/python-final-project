@@ -4,12 +4,12 @@ import time
 import random  
 import os
 import math
-##################################    game_loop for Stage1        #####################################
+##################################      for Stage1        #####################################
 #def stage1():
 
 
 
-##################################    game_loop for Stage2        #####################################
+##################################      for Stage2        #####################################
 os.chdir('D:/PBC') #package資料夾所在目錄
 from package.Class import mainCharacter,obstacle,special_obstacle,figure,text
 from package.Functions import set_ColorBlock,set_River,collision,correction,set_to_origin
@@ -353,7 +353,7 @@ def stage2():
 			pygame.display.update()
 			print("printed ending message")
 			time.sleep(2)
-			OP_ED.Failure_screen()
+			OP_ED.Failure_screen2()
 			stage2()
 			
 		if float(now_gpa.content)<2.5:
@@ -421,7 +421,7 @@ def stage2():
 		
 		
 		
-##################################    game_loop for Stage3        #####################################
+##################################      for Stage3        #####################################
 #def stage3():
 
 

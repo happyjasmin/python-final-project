@@ -4,7 +4,7 @@ import time
 import random  
 import os
 import math
-##################################   function for Stage1        #####################################
+##################################      for Stage1        #####################################
 #os.chdir('') #package資料夾所在目錄
 #from package.Class import 
 #os.chdir('')  #圖片聲音檔所在目錄
@@ -12,7 +12,7 @@ import math
 
 
 
-##################################    function for Stage2        #####################################
+##################################      for Stage2        #####################################
 os.chdir('D:/PBC') #package資料夾所在目錄
 from package.Class import mainCharacter,obstacle,special_obstacle,figure,text
 display_width =  1280 
@@ -56,7 +56,7 @@ def set_to_origin(objects,change_speed_x,change_speed_y): ## defines area that t
 		objects.x = random.randrange(1280,3200)
 		objects.movespeed -= change_speed_x
 		objects.movespeed_y -= change_speed_y
-##################################    function for Stage3        #####################################
+##################################      for Stage3        #####################################
 #os.chdir('') #package資料夾所在目錄
 #from package.Class import 
 #os.chdir('')  #圖片聲音檔所在目錄
