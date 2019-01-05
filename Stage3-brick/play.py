@@ -106,10 +106,6 @@ pygame.init()
 # 顯示Title.
 pygame.display.set_caption(u"打磚塊遊戲")
 
-bg = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background.png")
-
-#INSIDE OF THE GAME LOOP
-gameDisplay.blit(bg, (0, 0))
 
 # 建立畫佈大小.
 canvas = pygame.display.set_mode((canvas_width, canvas_height))
@@ -121,10 +117,10 @@ clock = pygame.time.Clock()
 font = pygame.font.SysFont('simhei', 30)
  
 # 背景
-background_img_1 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_1.png")
-background_img_2 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_2.png")
-background_brick_1=figure(0,0,650,1154)
-background_brick_2=figure(650,0,650,1154)
+#background_img_1 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_1.png")
+#background_img_2 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_2.png")
+#background_brick_1=figure(0,0,650,1154)
+#background_brick_2=figure(650,0,650,1154)
 # 底板.
 paddle_x = 0
 paddle_y = (canvas_height - 48)
