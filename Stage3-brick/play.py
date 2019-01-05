@@ -15,7 +15,9 @@ canvas_width = 1280
 canvas_height = 650
  
 # 背景顏色.
-block = (255,250,240)
+#block = (255,250,240)
+BackGround = Background(0,[0,0]) ####背景圖
+
 # 磚塊數量串列.
 bricks_list = []
  
@@ -90,7 +92,7 @@ def resetGame():
 	# 磚塊
 	for bricks in bricks_list:
 		# 亂數磚塊顏色
-		bricks.color = [227,23,13]		  
+		bricks.color = [255,255,255]		  
 		# 開啟磚塊.
 		bricks.visivle = True
 	# 0:等待開球
@@ -106,21 +108,17 @@ pygame.init()
 # 顯示Title.
 pygame.display.set_caption(u"打磚塊遊戲")
 
-
 # 建立畫佈大小.
 canvas = pygame.display.set_mode((canvas_width, canvas_height))
+BackGround = Background(0,[0,0])
+canvas.fill([255, 255, 255])
+canvas.blit(BackGround.image, BackGround.rect)
 
 # 時脈.
 clock = pygame.time.Clock()
  
 # 設定字型-黑體.
 font = pygame.font.SysFont('simhei', 30)
- 
-# 背景
-#background_img_1 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_1.png")
-#background_img_2 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_2.png")
-#background_brick_1=figure(0,0,650,1154)
-#background_brick_2=figure(650,0,650,1154)
 # 底板.
 paddle_x = 0
 paddle_y = (canvas_height - 48)
@@ -206,7 +204,9 @@ while running:
  
 	#---------------------------------------------------------------------	  
 	# 清除畫面.
-	canvas.fill(block)
+	#canvas.fill(block)
+	canvas.fill([255, 255, 255]) ##顯示背景
+	canvas.blit(BackGround.image, BackGround.rect) ##顯示背景
 	
 	# 磚塊
 	for bricks in bricks_list:
@@ -250,7 +250,8 @@ while running:
 			
 	
 	#顯示磚塊數量.
-	now_brick=text("You Still Have "+str(brick_num)+" bricks",30,(0,0,0),850,20)	now_brick.set("None")
+	now_brick=text("You Still Have "+str(brick_num)+" bricks",30,(0,0,0),850,20)
+	now_brick.set("None")
 	# 秀板子.
 	paddle.rect[0] = paddle_x
 	paddle.update()
@@ -290,10 +291,7 @@ while running:
 			time_keep=500
 		else:
 			time_keep=500
-	# 顯示背景
-	#background_brick_1.set(background_img_1)
-	#background_brick_2.set(background_img_2)
-	#gameDisplay.blit(canvas,(0,0))
+	
 	
 	# 更新gpabar
 	# 根據gpa 每0.5顯示一格hpbar
@@ -310,7 +308,7 @@ while running:
 	ball.update()
 	# 更新畫面.
 	pygame.display.update()
-	clock.tick(60)
+	clock.tick(10000000)
 	
 	
  
