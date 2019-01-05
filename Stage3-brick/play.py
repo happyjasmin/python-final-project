@@ -9,14 +9,13 @@ import random
 import os
 import math
 
- 
+
 # 視窗大小.
 canvas_width = 1280
 canvas_height = 650
  
-# 顏色.
+# 背景顏色.
 block = (255,250,240)
- 
 # 磚塊數量串列.
 bricks_list = []
  
@@ -106,14 +105,26 @@ def resetGame():
 pygame.init()
 # 顯示Title.
 pygame.display.set_caption(u"打磚塊遊戲")
+
+bg = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background.png")
+
+#INSIDE OF THE GAME LOOP
+gameDisplay.blit(bg, (0, 0))
+
 # 建立畫佈大小.
 canvas = pygame.display.set_mode((canvas_width, canvas_height))
+
 # 時脈.
 clock = pygame.time.Clock()
  
 # 設定字型-黑體.
 font = pygame.font.SysFont('simhei', 30)
  
+# 背景
+background_img_1 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_1.png")
+background_img_2 = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage3-brick\\background_2.png")
+background_brick_1=figure(0,0,650,1154)
+background_brick_2=figure(650,0,650,1154)
 # 底板.
 paddle_x = 0
 paddle_y = (canvas_height - 48)
@@ -137,15 +148,32 @@ for i in range( 0, 120):
 	bricks_list.append (Box(pygame, canvas, "brick_"+str(i), [	brick_w + brick_x, brick_h+ brick_y, 90, 25], [255,255,255]))
 	brick_w = brick_w + 95
 
-
 # 建立GPABar
 gpaImg = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage2-river\\GPA.png")
 hpbarImg = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage2-river\\HPbar.png")
 #初始分數.
+gpa_1=4.0
+gpa_2=4.0
 gpa_3=4.3
+final_grade=''
 # figure / text objects	
 gpa_icon=figure(30,30,96,96)
 new_gpa=text(str(gpa_3),60,(0,0,0),gpa_icon.width+96,gpa_icon.height)
+#-------------------------------------------------------------------------	  
+# 過關畫面.
+#-------------------------------------------------------------------------
+def final_screen():
+	bye_1=text("You Save The Principle",50,(227,23,13),640,200)
+	bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
+	while True:
+		gameDisplay.fill((0,0,0))
+		bye_1.set("Center")
+		bye_2.set("Center")
+		pygame.display.update()
+		
+
+
+
 # 初始遊戲.
 resetGame()
 
@@ -158,6 +186,8 @@ time_keep=600
 running = True
 
 while running:
+	
+	
 	#---------------------------------------------------------------------
 	# 判斷輸入.
 	#---------------------------------------------------------------------
@@ -191,8 +221,29 @@ while running:
 				brick_num = brick_num -1
 				##### 初始遊戲. ##### 改成跳出頁面 #####
 				if(brick_num <= 0):
-					resetGame()
-					break
+					final_gpa=gpa_1+gpa_2+gpa_3
+					if final_gpa==4.3:
+						final_grade='A+'
+					elif final_gpa>=4.0:
+						final_grade='A'
+					elif final_gpa>=3.7:
+						final_grade='A-'
+					elif final_gpa>=3.3:
+						final_grade='B+'
+					elif final_gpa>=3.0:
+						final_grade='B'
+					elif final_gpa>=2.7:
+						final_grade='B-'
+					elif final_gpa>=2.3:
+						final_grade='C+'
+					elif final_gpa>=2.0:
+						final_grade='C'
+					else:
+						final_grade='c-'
+					final_screen()
+					
+					
+					
 				# 球反彈.
 				dy = -dy; 
 			# 關閉磚塊.
@@ -201,6 +252,7 @@ while running:
 		# 更新磚塊.		   
 		bricks.update()
 			
+	
 	#顯示磚塊數量.
 	now_brick=text("You Still Have "+str(brick_num)+" bricks",30,(0,0,0),850,20)	now_brick.set("None")
 	# 秀板子.
@@ -237,8 +289,16 @@ while running:
 	if (time_keep>0):
 		time_keep += -1
 	elif (time_keep==0):
-		gpa_3 += (-0.1)
-		time_keep=500
+		if gpa_3>0:
+			gpa_3 += (-0.1)
+			time_keep=500
+		else:
+			time_keep=500
+	# 顯示背景
+	#background_brick_1.set(background_img_1)
+	#background_brick_2.set(background_img_2)
+	#gameDisplay.blit(canvas,(0,0))
+	
 	# 更新gpabar
 	# 根據gpa 每0.5顯示一格hpbar
 	# figure(self,x,y,width,height)
@@ -252,8 +312,6 @@ while running:
 	new_gpa=text(str(round(gpa_3,1)),50,(0,0,0),gpa_icon.width+150,gpa_icon.height-15)
 	# 更新球.
 	ball.update()
-	# 顯示中文.
-	
 	# 更新畫面.
 	pygame.display.update()
 	clock.tick(60)
