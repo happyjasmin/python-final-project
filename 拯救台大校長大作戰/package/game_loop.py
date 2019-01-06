@@ -209,9 +209,10 @@ def stage1():
 					
 					clickbutton = True
 					playing = True
-					
-				if event.type == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
-					fin = True
+				
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
+						fin = True
 					
 			#如果點play，則遊戲要開始了
 			if clickbutton and playing:	
@@ -227,6 +228,7 @@ def stage1():
 
 				break
 
+				
 				
 		#hint設定
 		if gamestart and gpa >0:
@@ -755,9 +757,7 @@ def stage2():
 		
 
 
-		## if crossed endline
-		if collision(boat,endline):
-			gameExit = True
+
 
 
 		## set time on right upper field
@@ -780,7 +780,7 @@ def stage2():
 
 
 		# endline=obstacle(display_width,display_height*(1/3),100,display_height*2/3,-4) # width 暫設50 px 
-		if (time_running)>=30.0: # >60s 就讓最後一條線進來，撐過一分鐘就成功
+		if (time_running)>=10.0: # >60s 就讓最後一條線進來，撐過一分鐘就成功
 			print("endline is appearing................")
 			endline.set(endlineImg)
 			#endline.x += endline.movespeed
@@ -789,7 +789,11 @@ def stage2():
 			else:
 				endline.x += endline.movespeed
 
-
+		## if crossed endline
+		if collision(boat,endline):
+			
+			OP_ED.Ending_Trailer2(now_gpa.content)
+			gameExit = True
 
 		## updating pygame display
 

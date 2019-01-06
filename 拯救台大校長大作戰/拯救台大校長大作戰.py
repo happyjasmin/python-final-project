@@ -5,13 +5,13 @@ import random
 import os
 import math
 os.chdir('D:/PBC') #package資料夾所在目錄
-from package.OP_ED import Opening_Trailer1,Opening_Trailer2,Opening_Trailer3,Failure_screen
+from package.OP_ED import Opening_Trailer1,Opening_Trailer2,Opening_Trailer3,Failure_screen,First_scene
 from package.game_loop import stage1,stage2,stage3
 
 
 
 
-
+#all_gpa=[]
 
 logging.basicConfig(level=logging.DEBUG)
 pygame.init()
@@ -23,7 +23,7 @@ clock = pygame.time.Clock()
 os.chdir('D:/PBC/Resource') #resource資料夾所在目錄
 
 ##################################      for starting      #####################################
-#First_scene()
+First_scene()
 
 ##################################      for Stage1        #####################################
 Opening_Trailer1()
@@ -33,7 +33,7 @@ stage1()
 ##################################      for Stage2        #####################################
 Opening_Trailer2()
 stage2()
-#Ending_Trailer2()
+
 
 ##################################      for Stage3        #####################################
 Opening_Trailer3()

@@ -19,6 +19,52 @@ blue0=(149,220,255)
 blue1=(138,208,255)
 blue2=(128,197,253)
 clock = pygame.time.Clock()
+##################################      for First_scene   #####################################
+os.chdir('D:/PBC') #package資料夾所在目錄
+from package.Class import mainCharacter,obstacle,special_obstacle,figure,text
+from package.Functions import set_ColorBlock,set_River,collision,correction,set_to_origin
+from package import OP_ED
+
+display_width =  1280 
+display_height = 960    
+gameDisplay = pygame.display.set_mode((display_width, display_height))   
+
+def First_scene():
+	jailImg = pygame.image.load("jail.png")
+	principleImg = pygame.image.load("principle.png")
+
+	jailImg = pygame.transform.scale(jailImg, (900, 960))
+	principleImg = pygame.transform.scale(principleImg, (900, 960))
+
+
+	jail_object=figure(190,0,900,960)
+	principle_object=figure(190,0,900,960)
+
+	## start : use space
+	startText= text('press Space to start',20,red,640,780)
+
+	to_stage1=False
+
+	while not to_stage1:
+
+		
+		principle_object.set(principleImg)
+		jail_object.set(jailImg)
+		startText.set("Center")
+		for event in pygame.event.get():    #it gets any event that happens...movenment of mouse or clicking etc
+			
+			if event.type == pygame.QUIT:   # when we will click X it will quit the window
+				logging.info("X is pressed, will quit")
+				pygame.quit()
+				quit()
+
+			################This event will handle situation when ever any key will be released ##################################
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					logging.info("space is pressed, will continue to stage 1")
+					to_stage1=True
+
+		pygame.display.update()
 ##################################      for Stage1        #####################################
 def Opening_Trailer1():
 
@@ -205,6 +251,44 @@ def	Failure_screen():
 			stage2()
 			
 		pygame.display.update()
+
+def	Ending_Trailer2(grade):
+
+	pygame.mixer.music.stop()
+	# text
+	#def __init__(self,content,size,color,x,y):
+	return_gpa = text("Your GPA is "+str(grade),50,red,display_width/2,display_height/2)
+	instructions = text("Press C to continue",50,red,display_width/2,display_height/2+300)
+	
+	to_stage3=False
+
+
+
+	while not to_stage3:	
+		gameDisplay.fill(black)	
+		return_gpa.set('Center')
+		instructions.set('Center')
+
+		for event in pygame.event.get():    #it gets any event that happens...movenment of mouse or clicking etc
+			
+			if event.type == pygame.QUIT:   # when we will click X it will quit the window
+				logging.info("X is pressed, will quit")
+				pygame.quit()
+				quit()
+
+			##### keydown elements
+
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_c:
+					logging.info("C is pressed, will continue to stage 3")
+					to_stage3=True
+
+		pygame.display.update()
+
+
+
+
+
 
 ##################################      for Stage3        #####################################		
 def Opening_Trailer3():
