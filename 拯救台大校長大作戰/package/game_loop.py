@@ -5,14 +5,23 @@ import random
 import os
 import math
 ##################################      for Stage1        #####################################
-os.chdir('D:/PBC')
+import os
+import pygame
+from pygame.locals import *
+import time
+import numpy
+import sched
+import threading
+from package.Class import calculate_gpa
+os.chdir('D:/PBC') #package資料夾所在目錄
 
 pygame.init()
 
 width,height = 1280, 960
-screen = pygame.display.set_mode((width,height))
+gameDisplay = pygame.display.set_mode((width,height))
 	
 pygame.mixer.init()
+gpa_init=calculate_gpa([])
 
 def stage1():
 	#load and setting objects and sounds
@@ -315,7 +324,7 @@ def stage1():
 
 								button = bell_m
 								crash.play()
-								gpa -= 0.1	
+								gpa -= 0.3	
 								hpbarlen -= 10
 								hpbar = pygame.transform.scale(hpbar,(hpbarlen,50))
 								life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
@@ -343,9 +352,9 @@ def stage1():
 						upper = set(time_diff[time_diff <= 0.25])
 						lower = set(time_diff[time_diff >= -0.15])
 
-						if len(upper & lower) == 1:
+						#if len(upper & lower) == 1:
 								
-								gpa -= 0.1
+								#gpa -= 0.3
 								
 			
 			if gpa < 0 :
@@ -382,13 +391,13 @@ def stage1():
 	textRect = pas.get_rect()
 	gameDisplay.blit(life, (100,300))
 
-						
+	gpa_init.add(gpa)					
 	life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
 	textRect = life.get_rect()
 	gameDisplay.blit(pas, (100,400))
 
 	pygame.display.flip()		
-	time.sleep(10)
+	time.sleep(3)
 				
 
 
@@ -396,7 +405,6 @@ def stage1():
 	gameDisplay.fill(0)				
 	gameDisplay.blit(pas, (500,400))
 	pygame.display.flip()
-
 
 
 
@@ -564,8 +572,7 @@ def stage2():
 					wave.play()
 					
 				if event.key == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
-					OP_ED.Opening_Trailer3()
-					stage3()
+					gameExit = True
 					
 			################This event will handle situation when ever any key will be released ##################################
 			if event.type == pygame.KEYUP:
@@ -762,10 +769,7 @@ def stage2():
 		
 
 
-		## if crossed endline
-		if collision(boat,endline):
-			pygame.quit()
-			quit()
+
 
 
 		## set time on right upper field
@@ -788,7 +792,7 @@ def stage2():
 
 
 		# endline=obstacle(display_width,display_height*(1/3),100,display_height*2/3,-4) # width 暫設50 px 
-		if (time_running)>=30.0: # >60s 就讓最後一條線進來，撐過一分鐘就成功
+		if (time_running)>=112+30: # >60s 就讓最後一條線進來，撐過一分鐘就成功
 			print("endline is appearing................")
 			endline.set(endlineImg)
 			#endline.x += endline.movespeed
@@ -797,10 +801,14 @@ def stage2():
 			else:
 				endline.x += endline.movespeed
 
-
+		## if crossed endline
+		if collision(boat,endline):
+			gpa_init.add(now_gpa.content)
+			OP_ED.Ending_Trailer2(now_gpa.content)
+			gameExit = True
 
 		## updating pygame display
-
+	
 		pygame.display.update()
 		clock.tick(60)  ## update 60 frames per second
 
@@ -843,10 +851,10 @@ def stage3():
 	ball_x = paddle_x
 	ball_y = paddle_y
 	ball   = Circle(pygame, gameDisplay, "ball", [ball_x, ball_x], 8, (0,0,0))
-	dx =  7
-	dy = -7
+	dx =  15
+	dy = -15
 	# 建立磚塊
-	brick_num = 0
+	brick_num = 120
 	brick_x = 70
 	brick_y = 130
 	brick_w = 0
@@ -862,9 +870,9 @@ def stage3():
 	gpaImg = pygame.image.load("GPA.png")
 	hpbarImg = pygame.image.load("HPbar.png")
 	#初始分數.
-	gpa_1=4.0
-	gpa_2=4.0
-	gpa_3=4.3
+	gpa_1 = gpa_init.allgpa[0]
+	gpa_2 = gpa_init.allgpa[1]
+	gpa_3 = 4.3
 	final_grade=''
 	# figure / text objects	
 	gpa_icon=figure(30,30,96,96)
@@ -933,7 +941,12 @@ def stage3():
 					brick_num = brick_num -1
 					##### 初始遊戲. ##### 改成跳出頁面 #####
 					if(brick_num <= 0):
-						final_gpa=gpa_1+gpa_2+gpa_3
+						final_gpa=float(gpa_1)+float(gpa_2)+float(gpa_3)
+						print("this is final gpa")
+						print(float(gpa_1))
+						print(float(gpa_2))
+						print(float(gpa_3))
+						print(final_gpa)
 						if final_gpa==4.3:
 							final_grade='A+'
 						elif final_gpa>=4.0:
@@ -1025,9 +1038,8 @@ def stage3():
 		# 更新畫面.
 		pygame.display.update()
 		clock.tick(10000000)
-		
-		
-	 
+	
+	gpa_init.add(new_gpa)
 	# 離開遊戲.
 	pygame.quit()
 	quit()
