@@ -171,6 +171,10 @@ def stage2():
 					y_change = 15
 					wave.play()
 					
+				if event.key == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
+					OP_ED.Opening_Trailer3()
+					stage3()
+					
 			################This event will handle situation when ever any key will be released ##################################
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -422,7 +426,220 @@ def stage2():
 		
 		
 ##################################      for Stage3        #####################################
-#def stage3():
+from package.Class import Background,Box,Circle
+from package.Functions import isCollision,resetGame
+
+def stage3():
+	# 建立畫佈大小.
+	BackGround = Background(0,[0,0])
+	gameDisplay.fill([255, 255, 255])
+	gameDisplay.blit(BackGround.image, BackGround.rect)
+	canvas_width = 1280
+	canvas_height = 960
+	bricks_list = []
+	# 時脈.
+	clock = pygame.time.Clock()
+	game_mode = 0 
+	# 設定字型-黑體.
+	font = pygame.font.SysFont('simhei', 30)
+	# 底板.
+	paddle_x = 0
+	paddle_y = (canvas_height - 48)
+	paddle = Box(pygame, gameDisplay, "paddle", [paddle_x, paddle_y, 100, 24], (0,0,0))
+	 
+	# 球.
+	ball_x = paddle_x
+	ball_y = paddle_y
+	ball   = Circle(pygame, gameDisplay, "ball", [ball_x, ball_x], 8, (0,0,0))
+	dx =  7
+	dy = -7
+	# 建立磚塊
+	brick_num = 0
+	brick_x = 70
+	brick_y = 130
+	brick_w = 0
+	brick_h = 0
+	for i in range( 0, 120):
+		if((i % 12)==0):
+			brick_w = 0
+			brick_h = brick_h + 30		 
+		bricks_list.append (Box(pygame, gameDisplay, "brick_"+str(i), [	brick_w + brick_x, brick_h+ brick_y, 90, 25], [255,255,255]))
+		brick_w = brick_w + 95
+
+	# 建立GPABar
+	gpaImg = pygame.image.load("GPA.png")
+	hpbarImg = pygame.image.load("HPbar.png")
+	#初始分數.
+	gpa_1=4.0
+	gpa_2=4.0
+	gpa_3=4.3
+	final_grade=''
+	# figure / text objects	
+	gpa_icon=figure(30,30,96,96)
+	new_gpa=text(str(gpa_3),60,(0,0,0),gpa_icon.width+96,gpa_icon.height)
+	#-------------------------------------------------------------------------	  
+	# 過關畫面.
+	#-------------------------------------------------------------------------
+	def final_screen():
+		bye_1=text("You Save The Principle",50,(227,23,13),640,200)
+		bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
+		while True:
+			gameDisplay.fill((0,0,0))
+			bye_1.set("Center")
+			bye_2.set("Center")
+			pygame.display.update()
+			
+
+
+
+	# 初始遊戲.
+	resetGame()
+
+	#計時.
+	time_keep=600
+	#-------------------------------------------------------------------------	  
+	# 主迴圈.
+	#-------------------------------------------------------------------------
+
+	running = True
+
+	while running:
+		
+		
+		#---------------------------------------------------------------------
+		# 判斷輸入.
+		#---------------------------------------------------------------------
+		for event in pygame.event.get():
+			# 離開遊戲.
+			if event.type == pygame.QUIT:
+				running = False
+			# 判斷按下按鈕
+			if event.type == pygame.KEYDOWN:
+				# 判斷按下ESC按鈕
+				if event.key == pygame.K_ESCAPE:
+					running = False
+					
+			# 判斷Mouse.
+			if event.type == pygame.MOUSEMOTION:
+				paddle_x = pygame.mouse.get_pos()[0] - 50
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				if(game_mode == 0):
+					game_mode = 1
+	 
+		#---------------------------------------------------------------------	  
+		# 清除畫面.
+		#canvas.fill(block)
+		gameDisplay.fill([255, 255, 255]) ##顯示背景
+		gameDisplay.blit(BackGround.image, BackGround.rect) ##顯示背景
+		
+		# 磚塊
+		for bricks in bricks_list:
+			# 球碰磚塊.
+			if(isCollision( ball.pos[0], ball.pos[1], bricks.rect)):
+				if(bricks.visivle):				   
+					# 扣除磚塊.
+					brick_num = brick_num -1
+					##### 初始遊戲. ##### 改成跳出頁面 #####
+					if(brick_num <= 0):
+						final_gpa=gpa_1+gpa_2+gpa_3
+						if final_gpa==4.3:
+							final_grade='A+'
+						elif final_gpa>=4.0:
+							final_grade='A'
+						elif final_gpa>=3.7:
+							final_grade='A-'
+						elif final_gpa>=3.3:
+							final_grade='B+'
+						elif final_gpa>=3.0:
+							final_grade='B'
+						elif final_gpa>=2.7:
+							final_grade='B-'
+						elif final_gpa>=2.3:
+							final_grade='C+'
+						elif final_gpa>=2.0:
+							final_grade='C'
+						else:
+							final_grade='c-'
+						final_screen()
+						
+						
+						
+					# 球反彈.
+					dy = -dy; 
+				# 關閉磚塊.
+				bricks.visivle = False
+	 
+			# 更新磚塊.		   
+			bricks.update()
+				
+		
+		#顯示磚塊數量.
+		now_brick=text("You Still Have "+str(brick_num)+" bricks",30,(0,0,0),850,20)
+		now_brick.set("None")
+		# 秀板子.
+		paddle.rect[0] = paddle_x
+		paddle.update()
+	 
+		# 碰撞判斷-球碰板子.
+		if(isCollision( ball.pos[0], ball.pos[1], paddle.rect)):		
+			# 球反彈.
+			dy = -dy;		  
+				
+		# 球.
+		# 0:等待開球
+		if(game_mode == 0):
+			ball.pos[0] = ball_x = paddle.rect[0] + ( (paddle.rect[2] - ball.radius) >> 1 )
+			ball.pos[1] = ball_y = paddle.rect[1] - ball.radius		   
+		# 1:遊戲進行中
+		elif(game_mode == 1):
+			ball_x += dx
+			ball_y += dy
+			#判斷死亡.
+			if(ball_y + dy > canvas_height - ball.radius):
+				game_mode = 0
+			# 右牆或左牆碰撞.
+			if(ball_x + dx > canvas_width - ball.radius or ball_x + dx < ball.radius):
+				dx = -dx
+			# 下牆或上牆碰撞
+			if(ball_y + dy > canvas_height - ball.radius or ball_y + dy < ball.radius):		   
+				dy = -dy
+			ball.pos[0] = ball_x
+			ball.pos[1] = ball_y
+	 
+		# 更新分數.
+		if (time_keep>0):
+			time_keep += -1
+		elif (time_keep==0):
+			if gpa_3>0:
+				gpa_3 += (-0.1)
+				time_keep=500
+			else:
+				time_keep=500
+		
+		
+		# 更新gpabar
+		# 根據gpa 每0.5顯示一格hpbar
+		# figure(self,x,y,width,height)
+		for i in range(0,int(math.floor(float(new_gpa.content)/0.5))):
+			hpbar = figure( gpa_icon.x+50*(i+1) , gpa_icon.y , 96 , 96)
+			hpbar.set(hpbarImg)
+		gpa_icon.set(gpaImg)
+		gpa_icon=figure(30,20,96,96)
+		new_gpa.set("None")
+		# 更新gpa
+		new_gpa=text(str(round(gpa_3,1)),50,(0,0,0),gpa_icon.width+150,gpa_icon.height-15)
+		# 更新球.
+		ball.update()
+		# 更新畫面.
+		pygame.display.update()
+		clock.tick(10000000)
+		
+		
+	 
+	# 離開遊戲.
+	pygame.quit()
+	quit()
+
 
 
 
