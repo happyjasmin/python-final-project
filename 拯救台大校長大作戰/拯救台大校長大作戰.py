@@ -5,7 +5,7 @@ import random
 import os
 import math
 os.chdir('D:/PBC') #package資料夾所在目錄
-from package.OP_ED import Opening_Trailer1,Opening_Trailer2,Opening_Trailer3,Failure_screen,First_scene
+from package.OP_ED import Opening_Trailer1,Opening_Trailer2,Opening_Trailer3,Failure_screen,First_scene,Final_scene
 from package.game_loop import stage1,stage2,stage3
 from package.Class import calculate_gpa
 
@@ -43,7 +43,7 @@ stage3()
 #Ending_Trailer3()
 
 ##################################      for ending        #####################################
-#Final_scene()
+Final_scene()
 
 pygame.quit()
 logging.info("Quitting.........")
