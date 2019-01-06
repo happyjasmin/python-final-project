@@ -6,7 +6,7 @@ import os
 import math
 os.chdir('D:/PBC') #package資料夾所在目錄
 from package.OP_ED import Opening_Trailer1,Opening_Trailer2,Opening_Trailer3,Failure_screen
-from package.game_loop import stage2,stage3
+from package.game_loop import stage1,stage2,stage3
 
 
 
@@ -27,7 +27,7 @@ os.chdir('D:/PBC/Resource') #resource資料夾所在目錄
 
 ##################################      for Stage1        #####################################
 Opening_Trailer1()
-#stage1()
+stage1()
 #Ending_Trailer1()
 
 ##################################      for Stage2        #####################################
