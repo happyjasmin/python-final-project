@@ -756,6 +756,12 @@ def stage2():
 			time.sleep(2)
 			OP_ED.Failure_screen2()
 			stage2()
+			OP_ED.Opening_Trailer3()
+			stage3()
+			OP_ED.Final_scene()
+			pygame.quit()
+			logging.info("Quitting.........")
+			quit()
 			
 		if float(now_gpa.content)<2.5:
 			now_gpa.color=red

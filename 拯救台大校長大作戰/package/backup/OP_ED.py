@@ -229,8 +229,7 @@ def	Failure_screen2():
 	YNText = text('press Y/N',20,red,640,780)
 	gameover = False
 	gameReset = False
-	judge=True
-	while judge:	
+	while True:	
 		gameDisplay.fill(black)	
 		failText.set('Center')
 		YNText.set('Center')
@@ -252,7 +251,6 @@ def	Failure_screen2():
 			quit()
 		if gameReset == True:
 			stage2()
-			judge=False
 			
 		pygame.display.update()
 
@@ -392,30 +390,9 @@ def	Final_scene():
 
 	# text
 	#def __init__(self,content,size,color,x,y):
-	final_gpa = gpa_init.mean()
-
-	if final_gpa==4.3:
-		final_grade='A+'
-	elif final_gpa>=4.0:
-		final_grade='A'
-	elif final_gpa>=3.7:
-		final_grade='A-'
-	elif final_gpa>=3.3:
-		final_grade='B+'
-	elif final_gpa>=3.0:
-		final_grade='B'
-	elif final_gpa>=2.7:
-		final_grade='B-'
-	elif final_gpa>=2.3:
-		final_grade='C+'
-	elif final_gpa>=2.0:
-		final_grade='C'
-	else:
-		final_grade='c-'
-
-
-	final_gpa = text("Your final GPA is "+final_grade,50,red,display_width/2,display_height/2)
+	final_gpa = text("Your final GPA is "+str(gpa_init.mean()),50,red,display_width/2,display_height/2)
 	quitting=False
+
 
 	while not quitting:	
 		gameDisplay.fill(black)	
@@ -429,5 +406,6 @@ def	Final_scene():
 				quit()
 
 		pygame.display.update()
+
 
 

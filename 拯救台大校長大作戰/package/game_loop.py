@@ -90,8 +90,8 @@ def stage1():
 	hpbar = pygame.image.load("HPbar_2.png")
 
 	#加聲音
-	#hit  = pygame.mixer.Sound("correct.wav")
-	#crash = pygame.mixer.Sound("wrong.wav")
+	hit  = pygame.mixer.Sound("correct.ogg")
+	crash = pygame.mixer.Sound("wrong.ogg")
 	song = pygame.mixer.music.load("ntu.mp3")
 	def gameDisplay_refresh(num):
 		gameDisplay.fill(0)
@@ -132,8 +132,8 @@ def stage1():
 		gameDisplay.blit(gpapic,(0,0))
 		gameDisplay.blit(Graph[num], (474,600))
 		pygame.display.flip()
-		#hit.set_volume(50)
-		#crash.set_volume(50)
+		hit.set_volume(50)
+		crash.set_volume(50)
 
 
 	#WASD按鍵狀況記錄
@@ -203,9 +203,11 @@ def stage1():
 					
 					clickbutton = True
 					playing = True
-					
-				if event.type == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
-					fin = True
+						
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
+						gamestart = True
+						fin = True
 					
 			#如果點play，則遊戲要開始了
 			if clickbutton and playing:	
@@ -291,7 +293,7 @@ def stage1():
 
 							life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
 
-							#hit.play()
+							hit.play()
 							
 							print(len(mints) - len(upper))
 							gameDisplay_refresh(len(mints) - len(upper))
@@ -323,7 +325,7 @@ def stage1():
 							else :
 
 								button = bell_m
-								#crash.play()
+								crash.play()
 								gpa -= 0.3	
 								hpbarlen -= 10
 								hpbar = pygame.transform.scale(hpbar,(hpbarlen,50))
@@ -755,13 +757,7 @@ def stage2():
 			print("printed ending message")
 			time.sleep(2)
 			OP_ED.Failure_screen2()
-			stage2()
-			OP_ED.Opening_Trailer3()
-			stage3()
-			OP_ED.Final_scene()
-			pygame.quit()
-			logging.info("Quitting.........")
-			quit()
+
 			
 		if float(now_gpa.content)<2.5:
 			now_gpa.color=red
@@ -796,7 +792,7 @@ def stage2():
 
 
 		# endline=obstacle(display_width,display_height*(1/3),100,display_height*2/3,-4) # width 暫設50 px 
-		if (time_running)>=112+30: # >60s 就讓最後一條線進來，撐過一分鐘就成功
+		if (time_running)>=150: # >60s 就讓最後一條線進來，撐過一分鐘就成功
 			print("endline is appearing................")
 			endline.set(endlineImg)
 			#endline.x += endline.movespeed
@@ -884,13 +880,13 @@ def stage3():
 	#-------------------------------------------------------------------------	  
 	# 過關畫面.
 	#-------------------------------------------------------------------------
-	def final_screen():
-		bye_1=text("You Saved The Principle",50,(227,23,13),640,200)
-		bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
+	def stage3_pass():
+		bye_1=text("Your Grade for Stage3 is "+str('%.2f' % gpa_3),50,(227,23,13),640,200)
+		#bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
 		while True:
 			gameDisplay.fill((0,0,0))
 			bye_1.set("Center")
-			bye_2.set("Center")
+			#bye_2.set("Center")
 			pygame.display.update()
 			
 
@@ -946,17 +942,17 @@ def stage3():
 					##### 初始遊戲. ##### 改成跳出頁面 #####
 					if(brick_num <= 0):
 						#final_gpa=float(gpa_1)+float(gpa_2)+float(gpa_3)
+						print("GPA-3")
+						gpa_3=float(gpa_3)
+						print(float(gpa_3))
 						gpa_init.add(gpa_3)
-						print("This is stage3 gpa")
-						final_gpa=float(gpa_3)
-
 						print("GPA-1")
 						print(float(gpa_1))
 						print("GPA-2")
 						print(float(gpa_2))
 					
 						#print(final_gpa)
-
+						'''
 						if final_gpa==4.3:
 							final_grade='A+'
 						elif final_gpa>=4.0:
@@ -975,8 +971,10 @@ def stage3():
 							final_grade='C'
 						else:
 							final_grade='c-'
-						final_screen()
-						
+						'''
+						#final_screen()
+						stage3_pass()	
+						running = False
 						
 						
 					# 球反彈.
@@ -1050,10 +1048,7 @@ def stage3():
 		clock.tick(10000000)
 	
 	gpa_init.add(new_gpa)
-	# 離開遊戲.
-	pygame.quit()
-	quit()
-
+	
 
 
 
