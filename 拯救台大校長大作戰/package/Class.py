@@ -7,6 +7,17 @@ import math
 display_width =  1280 
 display_height = 960   
 gameDisplay = pygame.display.set_mode((display_width, display_height)) 
+class calculate_gpa():
+
+	def __init__(self,allgpa):
+		self.allgpa=allgpa
+
+	def add(self,new_gpa):
+		self.allgpa.append(new_gpa)
+
+	def mean(self):
+ 		mean_gpa=sum(self.allgpa)/len(self.allgpa)
+ 		return mean_gpa
 ###############################################################################################
 ##################################      for Stage1        #####################################
 ###############################################################################################
@@ -147,3 +158,4 @@ class Circle(object):
     def update(self):
         if(self.visivle):
             self.pygame.draw.circle( self.canvas, self.color, self.pos , self.radius)
+
