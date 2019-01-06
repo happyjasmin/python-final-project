@@ -96,11 +96,14 @@ import pygame
 # 畫Background.
 #-------------------------------------------------------------------------
 class Background(pygame.sprite.Sprite):
-    def __init__(self, image_file, location):
-        pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
-        self.image = pygame.image.load('D:/PBC/Resource/background_3.png')
-        self.rect = self.image.get_rect()
-        self.rect.left, self.rect.top = location
+	
+	def __init__(self, image_file, location):
+		principleofficeImg=pygame.image.load('D:/PBC/Resource/principleoffice.png')
+		principleofficeImg=pygame.transform.scale(principleofficeImg, (1280,960))
+		pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
+		self.image = principleofficeImg
+		self.rect = self.image.get_rect()
+		self.rect.left, self.rect.top = location
 #-------------------------------------------------------------------------
 # 畫Box.
 #-------------------------------------------------------------------------

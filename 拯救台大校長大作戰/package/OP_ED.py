@@ -224,7 +224,7 @@ def Opening_Trailer2():
 		
 		pygame.display.update()
 		
-def	Failure_screen():
+def	Failure_screen2():
 	failText = text('Try again? ',20,red,640,380)
 	YNText = text('press Y/N',20,red,640,780)
 	gameover = False
@@ -296,17 +296,17 @@ def	Ending_Trailer2(grade):
 def Opening_Trailer3():
 
 	stage3 = obstacle(1280,180,192,96,-30)
-	ZhoushanRiver = obstacle (1280+500,265,192,96,-30)
+	Proom = obstacle (1280+500,265,192,96,-30)
 	
 	button = figure(720,510,192,96)
 	OP_background = figure(0,0,1280,960)
 	startText= text('press Space to start',20,red,640,780)
-	introText=text('Dodge all the three treasures!',28,black,420,600)
+	introText=text('Break blocks to save principle!',28,black,420,600)
 	
 	stage3Img = pygame.image.load("stage3.png") 
 	stage3Img = pygame.transform.scale(stage3Img, (500, 400))
-	ZhoushanRiverImg = pygame.image.load("ZhoushanRiver.png")
-	ZhoushanRiverImg = pygame.transform.scale(ZhoushanRiverImg, (400, 240))
+	ProomImg = pygame.image.load("Proom.png")
+	ProomImg = pygame.transform.scale(ProomImg, (400, 240))
 	buttonImg = pygame.image.load("button.png") 
 	buttonImg = pygame.transform.scale(buttonImg, (450, 215))
 	OP_backgroundImg = pygame.image.load("OP_background.png")
@@ -335,21 +335,21 @@ def Opening_Trailer3():
 		OP_background.set(OP_backgroundImg)	
 		
 		stage3.set(stage3Img)
-		ZhoushanRiver.set(ZhoushanRiverImg)
+		Proom.set(ProomImg)
 		stage3.x += stage3.movespeed
-		ZhoushanRiver.x += ZhoushanRiver.movespeed
+		Proom.x += Proom.movespeed
 
 		if stage3.x < 200 and Start_Play == True:
 
 			stage3.movespeed =0
-			ZhoushanRiver.movespeed=0
+			Proom.movespeed=0
 			button.set(buttonImg)
 			startText.set('Center')
 			introText.set('Center')
 			
 		elif Start_Play == False: #如果按下空白建 Start_Play 就會變成 False
 			stage3.movespeed = -30
-			ZhoushanRiver.movespeed=-30
+			Proom.movespeed=-30
 			if stage3.x  < -1280:
 					ExitOT = True
 		

@@ -90,8 +90,8 @@ def stage1():
 	hpbar = pygame.image.load("HPbar_2.png")
 
 	#加聲音
-	hit  = pygame.mixer.Sound("correct.wav")
-	crash = pygame.mixer.Sound("wrong.wav")
+	#hit  = pygame.mixer.Sound("correct.wav")
+	#crash = pygame.mixer.Sound("wrong.wav")
 	song = pygame.mixer.music.load("ntu.mp3")
 	def gameDisplay_refresh(num):
 		gameDisplay.fill(0)
@@ -132,8 +132,8 @@ def stage1():
 		gameDisplay.blit(gpapic,(0,0))
 		gameDisplay.blit(Graph[num], (474,600))
 		pygame.display.flip()
-		hit.set_volume(50)
-		crash.set_volume(50)
+		#hit.set_volume(50)
+		#crash.set_volume(50)
 
 
 	#WASD按鍵狀況記錄
@@ -291,7 +291,7 @@ def stage1():
 
 							life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
 
-							hit.play()
+							#hit.play()
 							
 							print(len(mints) - len(upper))
 							gameDisplay_refresh(len(mints) - len(upper))
@@ -323,7 +323,7 @@ def stage1():
 							else :
 
 								button = bell_m
-								crash.play()
+								#crash.play()
 								gpa -= 0.3	
 								hpbarlen -= 10
 								hpbar = pygame.transform.scale(hpbar,(hpbarlen,50))
@@ -423,10 +423,7 @@ def stage2():
 	#Opening_Trailer()
 	## play song
 	## https://nerdparadise.com/programming/pygame/part3
-	print("play music")
-	pygame.mixer.music.load("下一站茶山劉.mp3")
-	wave=pygame.mixer.Sound("wave.wav")
-	pygame.mixer.music.play(-1)
+
 	riverDisplay = pygame.Surface((1280,960)) #建立一個river圖層
 	black = (0, 0, 0)
 	white = (255, 255,255)
@@ -439,6 +436,7 @@ def stage2():
 ## load wave sound and background music in pygame
 	pygame.mixer.music.load("下一站茶山劉.mp3")
 	wave=pygame.mixer.Sound("wave.wav")
+	pygame.mixer.music.play(-1)
 	##uploading image of boats
 	boatImg0 = pygame.image.load("boat.png") 
 	boatImg1 = pygame.image.load("boat1.png")
@@ -758,6 +756,12 @@ def stage2():
 			time.sleep(2)
 			OP_ED.Failure_screen2()
 			stage2()
+			OP_ED.Opening_Trailer3()
+			stage3()
+			OP_ED.Final_scene()
+			pygame.quit()
+			logging.info("Quitting.........")
+			quit()
 			
 		if float(now_gpa.content)<2.5:
 			now_gpa.color=red
@@ -881,7 +885,7 @@ def stage3():
 	# 過關畫面.
 	#-------------------------------------------------------------------------
 	def final_screen():
-		bye_1=text("You Save The Principle",50,(227,23,13),640,200)
+		bye_1=text("You Saved The Principle",50,(227,23,13),640,200)
 		bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
 		while True:
 			gameDisplay.fill((0,0,0))
@@ -941,12 +945,18 @@ def stage3():
 					brick_num = brick_num -1
 					##### 初始遊戲. ##### 改成跳出頁面 #####
 					if(brick_num <= 0):
-						final_gpa=float(gpa_1)+float(gpa_2)+float(gpa_3)
-						print("this is final gpa")
+						#final_gpa=float(gpa_1)+float(gpa_2)+float(gpa_3)
+						gpa_init.add(gpa_3)
+						print("This is stage3 gpa")
+						final_gpa=float(gpa_3)
+
+						print("GPA-1")
 						print(float(gpa_1))
+						print("GPA-2")
 						print(float(gpa_2))
-						print(float(gpa_3))
-						print(final_gpa)
+					
+						#print(final_gpa)
+
 						if final_gpa==4.3:
 							final_grade='A+'
 						elif final_gpa>=4.0:
