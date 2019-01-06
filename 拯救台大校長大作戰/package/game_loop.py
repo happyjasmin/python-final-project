@@ -5,7 +5,393 @@ import random
 import os
 import math
 ##################################      for Stage1        #####################################
-#def stage1():
+import os
+import pygame
+from pygame.locals import *
+import time
+import numpy
+import sched
+import threading
+
+os.chdir('D:/PBC') #package資料夾所在目錄
+
+pygame.init()
+
+width,height = 1280, 960
+gameDisplay = pygame.display.set_mode((width,height))
+	
+pygame.mixer.init()
+
+def stage1():
+	#load and setting objects and sounds
+	# 物件圖片
+	bell  	= pygame.image.load("bell_origin.png")
+	bell = pygame.transform.scale(bell,(250,250))
+
+	bell_m 	= pygame.image.load("bell_miss.png")
+	bell_g 	= pygame.image.load("bell_good.png")
+	play	= pygame.image.load("play.png")
+	#
+	space 	= pygame.image.load("space.png")
+	press	= pygame.image.load("press.png")
+
+	#fail	= pygame.image.load("object/gameover.png")
+
+	pas	    = pygame.image.load("pass.png")
+
+	sky 	= pygame.image.load("sky.png")
+	background 	= pygame.image.load("fubell.png")
+
+
+	#調整大小
+	#fail = pygame.transform.scale(fail,(100,100))
+
+	bell_m = pygame.transform.scale(bell_m,(250,250))
+	bell_g = pygame.transform.scale(bell_g,(250,250))
+
+	play = pygame.transform.scale(play,(500,500))
+	space = pygame.transform.scale(space,(400,50))
+	press = pygame.transform.scale(press,(400,50))
+
+	#gpa
+	gpapic = pygame.image.load("GPA.png")
+	hpbar = pygame.image.load("HPbar_2.png")
+
+	#加聲音
+	hit  = pygame.mixer.Sound("correct.wav")
+	crash = pygame.mixer.Sound("wrong.wav")
+	song = pygame.mixer.music.load("ntu.mp3")
+	def gameDisplay_refresh():
+		gameDisplay.fill(0)
+		gameDisplay.blit(sky, (0,0))
+		gameDisplay.blit(background, (100,65))
+		gameDisplay.blit(button,(540,158))
+		gameDisplay.blit(music, (474,530))
+		gameDisplay.blit(life, (30,100))
+		gameDisplay.blit(hpbar,(20,10))
+		gameDisplay.blit(gpapic,(0,0))
+		pygame.display.flip()
+
+	def HINT():
+		press = pygame.image.load("press.png")
+		press = pygame.transform.scale(press,(400,50))
+		gameDisplay.fill(0)
+		music = press
+		gameDisplay.blit(sky, (0,0))
+		gameDisplay.blit(background, (100,65))
+		gameDisplay.blit(button,(540,158))
+		gameDisplay.blit(music, (474,530))
+		gameDisplay.blit(life, (30,100))
+		gameDisplay.blit(hpbar,(20,10))
+		gameDisplay.blit(gpapic,(0,0))
+		pygame.display.flip()
+
+	def HINT2():
+		gameDisplay.fill(0)
+		music = space
+		gameDisplay.blit(sky, (0,0))
+		gameDisplay.blit(background, (100,65))
+		gameDisplay.blit(button,(540,158))
+		gameDisplay.blit(music, (474,530))
+		gameDisplay.blit(life, (30,100))
+		gameDisplay.blit(hpbar,(20,10))
+		gameDisplay.blit(gpapic,(0,0))
+		pygame.display.flip()
+		hit.set_volume(50)
+		crash.set_volume(50)
+	
+	#WASD按鍵狀況記錄
+	keys = False
+
+	#要按的秒數
+	mints = [30.68,33.48,36.23,39.28,42.18,45.08,47.43,49.28,51.08,54.93,57.73,60.18,63.53,66.03,68.43,70.98,74.23,77.33,79.93,82.83,85.43]
+
+	mints = numpy.array(mints)
+
+			
+	# 歌詞
+	lyric =lyric =("    　　　搶救校長大作戰 Stage 1 : 認識臺大校歌     "
+			
+			"　　　　　　　　　　　　　　"
+			
+			"*考驗節奏感*   當畫面中的「space」變成「press」時，請按下鍵盤上的space鍵!"
+			
+			
+			"　取得高GPA，救回校長吧!　　　　"
+			
+			
+			"5      6      7      8 　"
+			
+			"臺大的環境　鬱鬱蔥蔥　　　臺大的氣象　勃勃蓬蓬 "
+		
+			"　　　　　"
+			
+			"　遠望那玉山突出雲表　　　　　　正象徵我們目標的高崇 "
+			
+			"　　　　　　　　　　　"
+			
+			"近看蜿蜒的淡水　　　　　　　他不捨晝夜地流動 "
+
+			"　　　　　　　　　"
+			
+			"正顯示我們百折不撓的作風　"
+			
+			"　　　　　　　　　"
+			
+			"這百折不撓的作風 "
+			
+			"　　　　　　　"
+			
+			"定使我們"
+			
+			"　　　　一切事業　　　都成功"
+			
+			"　　　　　　　　　　　　　　　　　　　　　"
+
+			
+			)
+
+	fin = False
+		
+	while not(fin):
+
+		#使用者未按任何按鍵的預設狀態
+		music 	= play
+		gamestart = False
+		makechoice=0
+		hpbarlen=430
+		hpbar = pygame.transform.scale(hpbar,(hpbarlen,50))
+		fin = False
+
+		#是否點擊play/stop
+		clickbutton = False
+		
+		#是否在撥放音樂 
+		playing = False
+		
+		#gpa
+		gpa = 4.3
+		font = pygame.font.Font(None, 50)
+		life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
+		textRect = life.get_rect()
+		
+		
+		#指定中文字體
+		fontc = pygame.font.Font("C:/Windows/Fonts/msjhl.ttc",50)
+		runninglyr = fontc.render(lyric, True, (0, 0, 0))
+		#字開始出現的位置
+		x = 480
+
+		#偵測玩家是否按下play
+		while not(gamestart):
+		
+			button = bell
+			gameDisplay.fill(0)		
+			gameDisplay.blit(sky, (0,0))
+			gameDisplay.blit(background, (100,65))
+			gameDisplay.blit(button,(540,158))
+			gameDisplay.blit(music, (378,303))
+				
+
+			pygame.display.flip()
+			
+			
+				
+			for event in pygame.event.get() :
+				
+				if event.type == pygame.QUIT :
+					
+					pygame.quit()
+					exit()
+						
+				#偵測是否有按滑鼠，與是否有按在"play"上		
+				if event.type == pygame.MOUSEBUTTONDOWN and 378 <= event.pos[0] <= (500+378) and 303 <= event.pos[1] <= (500+303) :
+					
+					clickbutton = True
+					playing = True
+					
+				if event.type == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
+					fin = True
+					
+			#如果點play，則遊戲要開始了
+			if clickbutton and playing:	
+
+				pygame.mixer.music.play()
+
+				music = space
+				clickbutton = False
+				playing = False
+				gamestart = True
+
+				start = time.time()
+
+				break
+
+				
+		#hint設定
+		if gamestart and gpa >0:
+			
+			gameDisplay_refresh()
+
+			schedule = mints - 0.5
+
+			for i in schedule:
+				T = threading.Timer(i , HINT)
+				T.start()
+				
+
+			schedule_end = mints + 1
+			
+			for i in schedule_end:
+				T_b = threading.Timer(i , HINT2)
+				T_b.start()
+
+
+		A = 0
+
+		while gamestart and gpa > 0:
+
+			A += 1
+			
+			if A % 3991 == 0:
+				gameDisplay.fill(0)
+				gameDisplay.blit(sky, (0,0))
+				gameDisplay.blit(background, (100,65))
+				gameDisplay.blit(button,(540,158))
+				gameDisplay.blit(music, (474,530))
+				gameDisplay.blit(life, (30,100))
+				gameDisplay.blit(hpbar,(20,10))
+				gameDisplay.blit(gpapic,(0,0))
+			
+				#遊戲開始字幕就開始跑
+				x -= 20
+				gameDisplay.blit(runninglyr, (x, 300))
+				gameDisplay.blit(runninglyr, (x + runninglyr.get_width(), 300))
+			
+				pygame.display.flip()	
+		
+			#偵測玩家是否按按鍵，按了就記錄按下的time
+			for event in pygame.event.get() :
+				
+				#遊戲開始字幕就開始跑
+				x -= 40
+			
+				gameDisplay.blit(runninglyr, (x, 300))
+				gameDisplay.blit(runninglyr, (x + runninglyr.get_width(), 300))
+			
+				pygame.display.flip()
+			
+				if event.type == pygame.QUIT :
+					
+					pygame.quit()
+					exit()
+				
+				#space按鍵狀況
+				if event.type == pygame.KEYDOWN :
+				
+					if event.key == pygame.K_SPACE :
+						keys = True
+
+						time_click = time.time() - start
+						
+						time_diff = time_click - mints
+						upper = set(time_diff[time_diff <= 0.25])
+						lower = set(time_diff[time_diff >= -0.15])
+
+						if len(upper & lower) == 1:
+
+							button = bell_g
+							gpa += 0.1
+							life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
+
+							hit.play()
+							
+							gameDisplay_refresh()
+
+							button = bell
+
+							gameDisplay_refresh()
+						
+						else :
+							
+							button = bell_m
+							crash.play()
+							gpa -= 0.1	
+							hpbarlen -= 10
+							hpbar = pygame.transform.scale(hpbar,(hpbarlen,50))
+							life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
+
+							gameDisplay_refresh()
+			
+							button = bell
+											
+							gameDisplay_refresh()
+
+									
+				if event.type == pygame.KEYUP :
+					if event.key == pygame.K_SPACE :
+						keys = False
+
+						time_click = time.time() - start
+
+						time_diff = time_click - mints
+						upper = set(time_diff[time_diff <= 0.25])
+						lower = set(time_diff[time_diff >= -0.15])
+
+						if len(upper & lower) == 1:
+								
+								gpa -= 0.1
+								
+			
+			if gpa < 0 :
+					
+				while not(makechoice) :
+					for event in pygame.event.get(): 
+							
+						pygame.mixer.music.stop()
+						fail = font.render(str("You have failed the semester, do you want to try again? (y/n)"),True,  (255, 255, 255))
+							
+						textRect = fail.get_rect()
+						gameDisplay.fill(0)
+						gameDisplay.blit(fail, (100,400))
+						pygame.display.flip()
+							
+						if event.type == pygame.KEYDOWN:
+							if event.key == pygame.K_n:
+								pygame.quit()
+								quit()
+									
+							if event.key == pygame.K_y:
+								makechoice = True
+								gamestart = False
+				
+			#如果完成遊戲且gpa大於0
+			if gpa > 0 and 89 <=time.time() - start <= 95:		
+				fin = True
+			
+				gamestart = False
+
+				
+	gameDisplay.fill(0)
+	pas = font.render(str("You have finish the semester!"),True,  (255, 255, 255))			
+	textRect = pas.get_rect()
+	gameDisplay.blit(life, (100,300))
+
+						
+	life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
+	textRect = life.get_rect()
+	gameDisplay.blit(pas, (100,400))
+
+	pygame.display.flip()		
+	time.sleep(10)
+				
+
+
+
+	gameDisplay.fill(0)				
+	gameDisplay.blit(pas, (500,400))
+	pygame.display.flip()
+
 
 
 
@@ -170,6 +556,9 @@ def stage2():
 				if event.key == pygame.K_DOWN:#pressing Down arrow will increase x-axis coordinate
 					y_change = 15
 					wave.play()
+					
+				if event.key == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
+					gameExit = True
 					
 			################This event will handle situation when ever any key will be released ##################################
 			if event.type == pygame.KEYUP:
@@ -368,8 +757,7 @@ def stage2():
 
 		## if crossed endline
 		if collision(boat,endline):
-			pygame.quit()
-			quit()
+			gameExit = True
 
 
 		## set time on right upper field
@@ -422,7 +810,220 @@ def stage2():
 		
 		
 ##################################      for Stage3        #####################################
-#def stage3():
+from package.Class import Background,Box,Circle
+from package.Functions import isCollision,resetGame
+
+def stage3():
+	# 建立畫佈大小.
+	BackGround = Background(0,[0,0])
+	gameDisplay.fill([255, 255, 255])
+	gameDisplay.blit(BackGround.image, BackGround.rect)
+	canvas_width = 1280
+	canvas_height = 960
+	bricks_list = []
+	# 時脈.
+	clock = pygame.time.Clock()
+	game_mode = 0 
+	# 設定字型-黑體.
+	font = pygame.font.SysFont('simhei', 30)
+	# 底板.
+	paddle_x = 0
+	paddle_y = (canvas_height - 48)
+	paddle = Box(pygame, gameDisplay, "paddle", [paddle_x, paddle_y, 100, 24], (0,0,0))
+	 
+	# 球.
+	ball_x = paddle_x
+	ball_y = paddle_y
+	ball   = Circle(pygame, gameDisplay, "ball", [ball_x, ball_x], 8, (0,0,0))
+	dx =  7
+	dy = -7
+	# 建立磚塊
+	brick_num = 120
+	brick_x = 70
+	brick_y = 130
+	brick_w = 0
+	brick_h = 0
+	for i in range( 0, 120):
+		if((i % 12)==0):
+			brick_w = 0
+			brick_h = brick_h + 30		 
+		bricks_list.append (Box(pygame, gameDisplay, "brick_"+str(i), [	brick_w + brick_x, brick_h+ brick_y, 90, 25], [255,255,255]))
+		brick_w = brick_w + 95
+
+	# 建立GPABar
+	gpaImg = pygame.image.load("GPA.png")
+	hpbarImg = pygame.image.load("HPbar.png")
+	#初始分數.
+	gpa_1=4.0
+	gpa_2=4.0
+	gpa_3=4.3
+	final_grade=''
+	# figure / text objects	
+	gpa_icon=figure(30,30,96,96)
+	new_gpa=text(str(gpa_3),60,(0,0,0),gpa_icon.width+96,gpa_icon.height)
+	#-------------------------------------------------------------------------	  
+	# 過關畫面.
+	#-------------------------------------------------------------------------
+	def final_screen():
+		bye_1=text("You Save The Principle",50,(227,23,13),640,200)
+		bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
+		while True:
+			gameDisplay.fill((0,0,0))
+			bye_1.set("Center")
+			bye_2.set("Center")
+			pygame.display.update()
+			
+
+
+
+	# 初始遊戲.
+	resetGame()
+
+	#計時.
+	time_keep=600
+	#-------------------------------------------------------------------------	  
+	# 主迴圈.
+	#-------------------------------------------------------------------------
+
+	running = True
+
+	while running:
+		
+		
+		#---------------------------------------------------------------------
+		# 判斷輸入.
+		#---------------------------------------------------------------------
+		for event in pygame.event.get():
+			# 離開遊戲.
+			if event.type == pygame.QUIT:
+				running = False
+			# 判斷按下按鈕
+			if event.type == pygame.KEYDOWN:
+				# 判斷按下ESC按鈕
+				if event.key == pygame.K_ESCAPE:
+					running = False
+					
+			# 判斷Mouse.
+			if event.type == pygame.MOUSEMOTION:
+				paddle_x = pygame.mouse.get_pos()[0] - 50
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				if(game_mode == 0):
+					game_mode = 1
+	 
+		#---------------------------------------------------------------------	  
+		# 清除畫面.
+		#canvas.fill(block)
+		gameDisplay.fill([255, 255, 255]) ##顯示背景
+		gameDisplay.blit(BackGround.image, BackGround.rect) ##顯示背景
+		
+		# 磚塊
+		for bricks in bricks_list:
+			# 球碰磚塊.
+			if(isCollision( ball.pos[0], ball.pos[1], bricks.rect)):
+				if(bricks.visivle):				   
+					# 扣除磚塊.
+					brick_num = brick_num -1
+					##### 初始遊戲. ##### 改成跳出頁面 #####
+					if(brick_num <= 0):
+						final_gpa=gpa_1+gpa_2+gpa_3
+						if final_gpa==4.3:
+							final_grade='A+'
+						elif final_gpa>=4.0:
+							final_grade='A'
+						elif final_gpa>=3.7:
+							final_grade='A-'
+						elif final_gpa>=3.3:
+							final_grade='B+'
+						elif final_gpa>=3.0:
+							final_grade='B'
+						elif final_gpa>=2.7:
+							final_grade='B-'
+						elif final_gpa>=2.3:
+							final_grade='C+'
+						elif final_gpa>=2.0:
+							final_grade='C'
+						else:
+							final_grade='c-'
+						final_screen()
+						
+						
+						
+					# 球反彈.
+					dy = -dy; 
+				# 關閉磚塊.
+				bricks.visivle = False
+	 
+			# 更新磚塊.		   
+			bricks.update()
+				
+		
+		#顯示磚塊數量.
+		now_brick=text("You Still Have "+str(brick_num)+" bricks",30,(0,0,0),850,20)
+		now_brick.set("None")
+		# 秀板子.
+		paddle.rect[0] = paddle_x
+		paddle.update()
+	 
+		# 碰撞判斷-球碰板子.
+		if(isCollision( ball.pos[0], ball.pos[1], paddle.rect)):		
+			# 球反彈.
+			dy = -dy;		  
+				
+		# 球.
+		# 0:等待開球
+		if(game_mode == 0):
+			ball.pos[0] = ball_x = paddle.rect[0] + ( (paddle.rect[2] - ball.radius) >> 1 )
+			ball.pos[1] = ball_y = paddle.rect[1] - ball.radius		   
+		# 1:遊戲進行中
+		elif(game_mode == 1):
+			ball_x += dx
+			ball_y += dy
+			#判斷死亡.
+			if(ball_y + dy > canvas_height - ball.radius):
+				game_mode = 0
+			# 右牆或左牆碰撞.
+			if(ball_x + dx > canvas_width - ball.radius or ball_x + dx < ball.radius):
+				dx = -dx
+			# 下牆或上牆碰撞
+			if(ball_y + dy > canvas_height - ball.radius or ball_y + dy < ball.radius):		   
+				dy = -dy
+			ball.pos[0] = ball_x
+			ball.pos[1] = ball_y
+	 
+		# 更新分數.
+		if (time_keep>0):
+			time_keep += -1
+		elif (time_keep==0):
+			if gpa_3>0:
+				gpa_3 += (-0.1)
+				time_keep=500
+			else:
+				time_keep=500
+		
+		
+		# 更新gpabar
+		# 根據gpa 每0.5顯示一格hpbar
+		# figure(self,x,y,width,height)
+		for i in range(0,int(math.floor(float(new_gpa.content)/0.5))):
+			hpbar = figure( gpa_icon.x+50*(i+1) , gpa_icon.y , 96 , 96)
+			hpbar.set(hpbarImg)
+		gpa_icon.set(gpaImg)
+		gpa_icon=figure(30,20,96,96)
+		new_gpa.set("None")
+		# 更新gpa
+		new_gpa=text(str(round(gpa_3,1)),50,(0,0,0),gpa_icon.width+150,gpa_icon.height-15)
+		# 更新球.
+		ball.update()
+		# 更新畫面.
+		pygame.display.update()
+		clock.tick(10000000)
+		
+		
+	 
+	# 離開遊戲.
+	pygame.quit()
+	quit()
+
 
 
 

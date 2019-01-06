@@ -23,7 +23,7 @@ clock = pygame.time.Clock()
 def Opening_Trailer1():
 
 	stage1 = obstacle(1280,180,192,96,-30)
-	bell = obstacle (1280+500,265,192,96,-30)
+	bellreal = obstacle (1280+500,265,192,96,-30)
 	
 	button2 = figure(720,510,192,96)
 	OP_background = figure(0,0,1280,960)
@@ -62,21 +62,21 @@ def Opening_Trailer1():
 		OP_background.set(OP_backgroundImg)	
 		
 		stage1.set(stage1Img)
-		bell.set(bellImg)
+		bellreal.set(bellImg)
 		stage1.x += stage1.movespeed
-		bell.x += bell.movespeed
+		bellreal.x += bellreal.movespeed
 
 		if stage1.x < 200 and Start_Play == True:
 
 			stage1.movespeed =0
-			bell.movespeed=0
+			bellreal.movespeed=0
 			button2.set(button2Img)
 			startText.set('Center')
 			introText.set('Center')
 			
 		elif Start_Play == False: #如果按下空白建 Start_Play 就會變成 False
 			stage1.movespeed = -30
-			bell.movespeed=-30
+			bellreal.movespeed=-30
 			if stage1.x  < -1280:
 					ExitOT = True
 		
@@ -218,7 +218,7 @@ def Opening_Trailer3():
 	introText=text('Dodge all the three treasures!',28,black,420,600)
 	
 	stage3Img = pygame.image.load("stage3.png") 
-	stage3Img = pygame.transform.scale(stage2Img, (500, 400))
+	stage3Img = pygame.transform.scale(stage3Img, (500, 400))
 	ZhoushanRiverImg = pygame.image.load("ZhoushanRiver.png")
 	ZhoushanRiverImg = pygame.transform.scale(ZhoushanRiverImg, (400, 240))
 	buttonImg = pygame.image.load("button.png") 

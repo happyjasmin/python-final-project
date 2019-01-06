@@ -4,19 +4,16 @@ import time
 import random  
 import os
 import math
+<<<<<<< HEAD
 os.chdir('C:\\Users\\user\\Documents\\GitHub\\test\\拯救台大校長大作戰') #package資料夾所在目錄
-
-##################################      for Stage1        #####################################
-#不要寫from sample_module import * 避免名稱衝突沒發現
-
-##################################      for Stage2        #####################################
-from package.Class import mainCharacter,obstacle,special_obstacle,figure,text
-from package.Functions import set_ColorBlock,set_River,collision,correction,set_to_origin
+=======
+os.chdir('D:/PBC') #package資料夾所在目錄
 from package.OP_ED import Opening_Trailer1,Opening_Trailer2,Opening_Trailer3,Failure_screen
-from package.game_loop import stage2
+from package.game_loop import stage1,stage2,stage3
+>>>>>>> 5939d5098b9a1b34b2def0567ee7ce744a62b2de
 
-##################################      for Stage3        #####################################
-#不要寫from sample_module import * 避免名稱衝突沒發現
+
+
 
 
 
@@ -34,7 +31,7 @@ os.chdir('D:/PBC/Resource') #resource資料夾所在目錄
 
 ##################################      for Stage1        #####################################
 Opening_Trailer1()
-#stage1()
+stage1()
 #Ending_Trailer1()
 
 ##################################      for Stage2        #####################################
@@ -44,7 +41,7 @@ stage2()
 
 ##################################      for Stage3        #####################################
 Opening_Trailer3()
-#stage3()
+stage3()
 #Ending_Trailer3()
 
 ##################################      for ending        #####################################

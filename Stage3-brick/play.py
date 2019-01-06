@@ -9,14 +9,15 @@ import random
 import os
 import math
 
- 
+
 # 視窗大小.
 canvas_width = 1280
 canvas_height = 650
  
-# 顏色.
-block = (255,250,240)
- 
+# 背景顏色.
+#block = (255,250,240)
+BackGround = Background(0,[0,0]) ####背景圖
+
 # 磚塊數量串列.
 bricks_list = []
  
@@ -91,7 +92,7 @@ def resetGame():
 	# 磚塊
 	for bricks in bricks_list:
 		# 亂數磚塊顏色
-		bricks.color = [227,23,13]		  
+		bricks.color = [255,255,255]		  
 		# 開啟磚塊.
 		bricks.visivle = True
 	# 0:等待開球
@@ -106,14 +107,18 @@ def resetGame():
 pygame.init()
 # 顯示Title.
 pygame.display.set_caption(u"打磚塊遊戲")
+
 # 建立畫佈大小.
 canvas = pygame.display.set_mode((canvas_width, canvas_height))
+BackGround = Background(0,[0,0])
+canvas.fill([255, 255, 255])
+canvas.blit(BackGround.image, BackGround.rect)
+
 # 時脈.
 clock = pygame.time.Clock()
  
 # 設定字型-黑體.
 font = pygame.font.SysFont('simhei', 30)
- 
 # 底板.
 paddle_x = 0
 paddle_y = (canvas_height - 48)
@@ -137,15 +142,32 @@ for i in range( 0, 120):
 	bricks_list.append (Box(pygame, canvas, "brick_"+str(i), [	brick_w + brick_x, brick_h+ brick_y, 90, 25], [255,255,255]))
 	brick_w = brick_w + 95
 
-
 # 建立GPABar
 gpaImg = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage2-river\\GPA.png")
 hpbarImg = pygame.image.load("C:\\Users\\sophi\\Documents\\python-final-project\\Stage2-river\\HPbar.png")
 #初始分數.
+gpa_1=4.0
+gpa_2=4.0
 gpa_3=4.3
+final_grade=''
 # figure / text objects	
 gpa_icon=figure(30,30,96,96)
 new_gpa=text(str(gpa_3),60,(0,0,0),gpa_icon.width+96,gpa_icon.height)
+#-------------------------------------------------------------------------	  
+# 過關畫面.
+#-------------------------------------------------------------------------
+def final_screen():
+	bye_1=text("You Save The Principle",50,(227,23,13),640,200)
+	bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
+	while True:
+		gameDisplay.fill((0,0,0))
+		bye_1.set("Center")
+		bye_2.set("Center")
+		pygame.display.update()
+		
+
+
+
 # 初始遊戲.
 resetGame()
 
@@ -158,6 +180,8 @@ time_keep=600
 running = True
 
 while running:
+	
+	
 	#---------------------------------------------------------------------
 	# 判斷輸入.
 	#---------------------------------------------------------------------
@@ -180,7 +204,9 @@ while running:
  
 	#---------------------------------------------------------------------	  
 	# 清除畫面.
-	canvas.fill(block)
+	#canvas.fill(block)
+	canvas.fill([255, 255, 255]) ##顯示背景
+	canvas.blit(BackGround.image, BackGround.rect) ##顯示背景
 	
 	# 磚塊
 	for bricks in bricks_list:
@@ -191,8 +217,29 @@ while running:
 				brick_num = brick_num -1
 				##### 初始遊戲. ##### 改成跳出頁面 #####
 				if(brick_num <= 0):
-					resetGame()
-					break
+					final_gpa=gpa_1+gpa_2+gpa_3
+					if final_gpa==4.3:
+						final_grade='A+'
+					elif final_gpa>=4.0:
+						final_grade='A'
+					elif final_gpa>=3.7:
+						final_grade='A-'
+					elif final_gpa>=3.3:
+						final_grade='B+'
+					elif final_gpa>=3.0:
+						final_grade='B'
+					elif final_gpa>=2.7:
+						final_grade='B-'
+					elif final_gpa>=2.3:
+						final_grade='C+'
+					elif final_gpa>=2.0:
+						final_grade='C'
+					else:
+						final_grade='c-'
+					final_screen()
+					
+					
+					
 				# 球反彈.
 				dy = -dy; 
 			# 關閉磚塊.
@@ -201,8 +248,10 @@ while running:
 		# 更新磚塊.		   
 		bricks.update()
 			
+	
 	#顯示磚塊數量.
-	now_brick=text("You Still Have "+str(brick_num)+" bricks",30,(0,0,0),850,20)	now_brick.set("None")
+	now_brick=text("You Still Have "+str(brick_num)+" bricks",30,(0,0,0),850,20)
+	now_brick.set("None")
 	# 秀板子.
 	paddle.rect[0] = paddle_x
 	paddle.update()
@@ -237,8 +286,13 @@ while running:
 	if (time_keep>0):
 		time_keep += -1
 	elif (time_keep==0):
-		gpa_3 += (-0.1)
-		time_keep=500
+		if gpa_3>0:
+			gpa_3 += (-0.1)
+			time_keep=500
+		else:
+			time_keep=500
+	
+	
 	# 更新gpabar
 	# 根據gpa 每0.5顯示一格hpbar
 	# figure(self,x,y,width,height)
@@ -252,11 +306,9 @@ while running:
 	new_gpa=text(str(round(gpa_3,1)),50,(0,0,0),gpa_icon.width+150,gpa_icon.height-15)
 	# 更新球.
 	ball.update()
-	# 顯示中文.
-	
 	# 更新畫面.
 	pygame.display.update()
-	clock.tick(60)
+	clock.tick(10000000)
 	
 	
  
