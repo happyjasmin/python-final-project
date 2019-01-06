@@ -5,11 +5,8 @@ import random
 import os
 import math
 ##################################      for Stage1        #####################################
-os.chdir('')
-"""
-import class
-"""
-from package.Functions import HINT,HINT2,screen_refresh  
+os.chdir('D:/PBC')
+
 pygame.init()
 
 width,height = 1280, 960
@@ -20,22 +17,51 @@ pygame.mixer.init()
 def stage1():
 	#load and setting objects and sounds
 	# 物件圖片
-	bell  	= pygame.image.load("object/bell_origin.png")
+	bell  	= pygame.image.load("bell_origin.png")
 	bell = pygame.transform.scale(bell,(250,250))
 
-	bell_m 	= pygame.image.load("object/bell_miss.png")
-	bell_g 	= pygame.image.load("object/bell_good.png")
-	play	= pygame.image.load("object/play.png")
+	bell_m 	= pygame.image.load("bell_miss.png")
+	bell_g 	= pygame.image.load("bell_good.png")
+	play	= pygame.image.load("play.png")
 	#
-	space 	= pygame.image.load("object/space.png")
-	press	= pygame.image.load("object/press.png")
+	space 	= pygame.image.load("space.png")
+	press	= pygame.image.load("press.png")
 
-	#fail	= pygame.image.load("object/gameover.png")
+	sky 	= pygame.image.load("sky.png")
+	background 	= pygame.image.load("fubell.png")
 
-	pas	    = pygame.image.load("object/pass.png")
+	graph0 = pygame.image.load("subtitle/0.png")
+	graph1 = pygame.image.load("subtitle/1.png")
+	graph2 = pygame.image.load("subtitle/2.png")
+	graph3 = pygame.image.load("subtitle/3.png")
+	graph4 = pygame.image.load("subtitle/4.png")
+	graph5 = pygame.image.load("subtitle/5.png")
+	graph6 = pygame.image.load("subtitle/6.png")
+	graph7 = pygame.image.load("subtitle/7.png")
 
-	sky 	= pygame.image.load("object/sky.png")
-	background 	= pygame.image.load("object/fubell.png")
+	graph8 = pygame.image.load("subtitle/8.png")
+	graph9 = pygame.image.load("subtitle/9.png")
+	graph10 = pygame.image.load("subtitle/10.png")
+	graph11 = pygame.image.load("subtitle/11.png")
+	graph12 = pygame.image.load("subtitle/12.png")
+	graph13 = pygame.image.load("subtitle/13.png")
+	graph14 = pygame.image.load("subtitle/14.png")
+
+	graph15 = pygame.image.load("subtitle/15.png")
+	graph16 = pygame.image.load("subtitle/16.png")
+	graph17 = pygame.image.load("subtitle/17.png")
+	graph18 = pygame.image.load("subtitle/18.png")
+	graph19 = pygame.image.load("subtitle/19.png")
+	graph20 = pygame.image.load("subtitle/20.png")
+	graph21 = pygame.image.load("subtitle/21.png")
+
+	Graph = [graph1, graph2, graph3, graph4, graph5, graph6, graph7,
+			 graph8, graph9, graph10, graph11, graph12, graph13, graph14,
+			 graph15, graph16, graph17, graph18, graph19, graph20, graph21
+			]
+			
+	for i in range(len(Graph)):
+		Graph[i] = pygame.transform.scale(Graph[i],(400,60))
 
 
 	#調整大小
@@ -48,69 +74,71 @@ def stage1():
 	space = pygame.transform.scale(space,(400,50))
 	press = pygame.transform.scale(press,(400,50))
 
+	graph0 = pygame.transform.scale(graph0,(400,150))
+
 	#gpa
-	gpapic = pygame.image.load("object/GPA.png")
-	hpbar = pygame.image.load("object/HPbar_2.png")
+	gpapic = pygame.image.load("GPA.png")
+	hpbar = pygame.image.load("HPbar_2.png")
 
 	#加聲音
-	hit  = pygame.mixer.Sound("sound/correct.wav")
-	crash = pygame.mixer.Sound("sound/wrong.wav")
-	song = pygame.mixer.music.load("sound/ntu.mp3")
+	hit  = pygame.mixer.Sound("correct.wav")
+	crash = pygame.mixer.Sound("wrong.wav")
+	song = pygame.mixer.music.load("ntu.mp3")
+	def gameDisplay_refresh(num):
+		gameDisplay.fill(0)
+		gameDisplay.blit(sky, (0,0))
+		gameDisplay.blit(background, (100,65))
+		gameDisplay.blit(button,(540,158))
+		gameDisplay.blit(music, (474,530))
+		gameDisplay.blit(life, (30,100))
+		gameDisplay.blit(hpbar,(20,10))
+		gameDisplay.blit(gpapic,(0,0))
+		gameDisplay.blit(Graph[num], (474,600))
+		pygame.display.flip()
+
+	def HINT(num):
+		press = pygame.image.load("press.png")
+		press = pygame.transform.scale(press,(400,50))
+		gameDisplay.fill(0)
+		music = press
+		gameDisplay.blit(sky, (0,0))
+		gameDisplay.blit(background, (100,65))
+		gameDisplay.blit(button,(540,158))
+		gameDisplay.blit(music, (474,530))
+		gameDisplay.blit(life, (30,100))
+		gameDisplay.blit(hpbar,(20,10))
+		gameDisplay.blit(gpapic,(0,0))
+		gameDisplay.blit(Graph[num], (474,600))
+		pygame.display.flip()
+
+	def HINT2(num):
+		gameDisplay.fill(0)
+		music = space
+		gameDisplay.blit(sky, (0,0))
+		gameDisplay.blit(background, (100,65))
+		gameDisplay.blit(button,(540,158))
+		gameDisplay.blit(music, (474,530))
+		gameDisplay.blit(life, (30,100))
+		gameDisplay.blit(hpbar,(20,10))
+		gameDisplay.blit(gpapic,(0,0))
+		gameDisplay.blit(Graph[num], (474,600))
+		pygame.display.flip()
+		hit.set_volume(50)
+		crash.set_volume(50)
 
 
-	hit.set_volume(50)
-	crash.set_volume(50)
-	
 	#WASD按鍵狀況記錄
 	keys = False
 
+	#num
+	num_s = -1
+	num_e = -1
+
 	#要按的秒數
 	mints = [30.68,33.48,36.23,39.28,42.18,45.08,47.43,49.28,51.08,54.93,57.73,60.18,63.53,66.03,68.43,70.98,74.23,77.33,79.93,82.83,85.43]
-
 	mints = numpy.array(mints)
 
 			
-	# 歌詞
-	lyric =lyric =("    　　　搶救校長大作戰 Stage 1 : 認識臺大校歌     "
-			
-			"　　　　　　　　　　　　　　"
-			
-			"*考驗節奏感*   當畫面中的「space」變成「press」時，請按下鍵盤上的space鍵!"
-			
-			
-			"　取得高GPA，救回校長吧!　　　　"
-			
-			
-			"5      6      7      8 　"
-			
-			"臺大的環境　鬱鬱蔥蔥　　　臺大的氣象　勃勃蓬蓬 "
-		
-			"　　　　　"
-			
-			"　遠望那玉山突出雲表　　　　　　正象徵我們目標的高崇 "
-			
-			"　　　　　　　　　　　"
-			
-			"近看蜿蜒的淡水　　　　　　　他不捨晝夜地流動 "
-
-			"　　　　　　　　　"
-			
-			"正顯示我們百折不撓的作風　"
-			
-			"　　　　　　　　　"
-			
-			"這百折不撓的作風 "
-			
-			"　　　　　　　"
-			
-			"定使我們"
-			
-			"　　　　一切事業　　　都成功"
-			
-			"　　　　　　　　　　　　　　　　　　　　　"
-
-			
-			)
 
 	fin = False
 		
@@ -137,21 +165,17 @@ def stage1():
 		textRect = life.get_rect()
 		
 		
-		#指定中文字體
-		fontc = pygame.font.Font("/System/Library/Fonts/STHeiti Medium.ttc",50)
-		runninglyr = fontc.render(lyric, True, (0, 0, 0))
-		#字開始出現的位置
-		x = 480
+
 
 		#偵測玩家是否按下play
 		while not(gamestart):
 		
 			button = bell
-			screen.fill(0)		
-			screen.blit(sky, (0,0))
-			screen.blit(background, (100,65))
-			screen.blit(button,(540,158))
-			screen.blit(music, (378,303))
+			gameDisplay.fill(0)		
+			gameDisplay.blit(sky, (0,0))
+			gameDisplay.blit(background, (100,65))
+			gameDisplay.blit(button,(540,158))
+			gameDisplay.blit(music, (378,303))
 				
 
 			pygame.display.flip()
@@ -170,7 +194,9 @@ def stage1():
 					
 					clickbutton = True
 					playing = True
-
+					
+				if event.type == pygame.K_t:#pressing Down arrow will increase x-axis coordinate
+					fin = True
 					
 			#如果點play，則遊戲要開始了
 			if clickbutton and playing:	
@@ -190,55 +216,44 @@ def stage1():
 		#hint設定
 		if gamestart and gpa >0:
 			
-			screen_refresh()
+			gameDisplay.fill(0)
+			gameDisplay.blit(sky, (0,0))
+			gameDisplay.blit(background, (100,65))
+			gameDisplay.blit(button,(540,158))
+			gameDisplay.blit(music, (474,530))
+			gameDisplay.blit(life, (30,100))
+			gameDisplay.blit(graph0, (474,720))
+			gameDisplay.blit(hpbar,(20,10))
+			gameDisplay.blit(gpapic,(0,0))
+			pygame.display.flip()
 
 			schedule = mints - 0.5
 
 			for i in schedule:
-				T = threading.Timer(i , HINT)
+				num_s += 1
+				print(num_s)
+				T = threading.Timer(i , HINT, args= [num_s])
 				T.start()
-				
+			
+			# schedule_sub = mints + 1
+			# for i in schedule_sub:
+			# 	S = threading.Timer(i , HINTS, args= [num])
+			# 	num += 1
+			# 	S.start()
 
 			schedule_end = mints + 1
 			
 			for i in schedule_end:
-				T_b = threading.Timer(i , HINT2)
+				num_e += 1
+				print(num_e)
+				T_b = threading.Timer(i , HINT2, args = [num_e])
 				T_b.start()
 
-
-		A = 0
-
-		while gamestart and gpa > 0:
-
-			A += 1
-			
-			if A % 3991 == 0:
-				screen.fill(0)
-				screen.blit(sky, (0,0))
-				screen.blit(background, (100,65))
-				screen.blit(button,(540,158))
-				screen.blit(music, (474,530))
-				screen.blit(life, (30,100))
-				screen.blit(hpbar,(20,10))
-				screen.blit(gpapic,(0,0))
-			
-				#遊戲開始字幕就開始跑
-				x -= 20
-				screen.blit(runninglyr, (x, 300))
-				screen.blit(runninglyr, (x + runninglyr.get_width(), 300))
-			
-				pygame.display.flip()	
 		
+		while gamestart and gpa > 0:
 			#偵測玩家是否按按鍵，按了就記錄按下的time
 			for event in pygame.event.get() :
 				
-				#遊戲開始字幕就開始跑
-				x -= 40
-			
-				screen.blit(runninglyr, (x, 300))
-				screen.blit(runninglyr, (x + runninglyr.get_width(), 300))
-			
-				pygame.display.flip()
 			
 				if event.type == pygame.QUIT :
 					
@@ -255,37 +270,68 @@ def stage1():
 						
 						time_diff = time_click - mints
 						upper = set(time_diff[time_diff <= 0.25])
+						upper_len = len(upper)
 						lower = set(time_diff[time_diff >= -0.15])
 
 						if len(upper & lower) == 1:
 
 							button = bell_g
-							gpa += 0.1
+							
+							if gpa < 4.3:
+								gpa += 0.1
+
 							life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
 
 							hit.play()
 							
-							screen_refresh()
+							print(len(mints) - len(upper))
+							gameDisplay_refresh(len(mints) - len(upper))
 
 							button = bell
 
-							screen_refresh()
+							print(len(upper))
+							gameDisplay_refresh(len(mints) - len(upper))
 						
 						else :
 							
-							button = bell_m
-							crash.play()
-							gpa -= 0.1	
-							hpbarlen -= 10
-							hpbar = pygame.transform.scale(hpbar,(hpbarlen,50))
-							life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
+							time_miss = time.time() - start
+							print(time_miss)
+							print(time_diff[0])
 
-							screen_refresh()
-			
-							button = bell
-											
-							screen_refresh()
+							if time_miss < mints[0]:
+								
+								gameDisplay.fill(0)
+								gameDisplay.blit(sky, (0,0))
+								gameDisplay.blit(background, (100,65))
+								gameDisplay.blit(button,(540,158))
+								gameDisplay.blit(music, (474,530))
+								gameDisplay.blit(life, (30,100))
+								gameDisplay.blit(graph0, (474,720))
+								gameDisplay.blit(hpbar,(20,10))
+								gameDisplay.blit(gpapic,(0,0))
+								pygame.display.flip()
+							
+							else :
 
+								button = bell_m
+								crash.play()
+								gpa -= 0.1	
+								hpbarlen -= 10
+								hpbar = pygame.transform.scale(hpbar,(hpbarlen,50))
+								life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
+							
+								if time_miss > time_diff[upper_len-1]+0.25:
+									pos = len(mints) - len(upper) - 1
+								else :
+									pos = len(mints) - len(upper)
+
+								print(len(mints) - len(upper))
+								gameDisplay_refresh(pos)
+				
+								button = bell
+												
+								print(len(upper))
+								gameDisplay_refresh(pos)
 									
 				if event.type == pygame.KEYUP :
 					if event.key == pygame.K_SPACE :
@@ -311,8 +357,8 @@ def stage1():
 						fail = font.render(str("You have failed the semester, do you want to try again? (y/n)"),True,  (255, 255, 255))
 							
 						textRect = fail.get_rect()
-						screen.fill(0)
-						screen.blit(fail, (100,400))
+						gameDisplay.fill(0)
+						gameDisplay.blit(fail, (100,400))
 						pygame.display.flip()
 							
 						if event.type == pygame.KEYDOWN:
@@ -331,15 +377,15 @@ def stage1():
 				gamestart = False
 
 				
-	screen.fill(0)
+	gameDisplay.fill(0)
 	pas = font.render(str("You have finish the semester!"),True,  (255, 255, 255))			
 	textRect = pas.get_rect()
-	screen.blit(life, (100,300))
+	gameDisplay.blit(life, (100,300))
 
 						
 	life = font.render(str("GPA :")+str("%.1f" %gpa),True,  (255, 255, 255))
 	textRect = life.get_rect()
-	screen.blit(pas, (100,400))
+	gameDisplay.blit(pas, (100,400))
 
 	pygame.display.flip()		
 	time.sleep(10)
@@ -347,9 +393,10 @@ def stage1():
 
 
 
-	screen.fill(0)				
-	screen.blit(pas, (500,400))
+	gameDisplay.fill(0)				
+	gameDisplay.blit(pas, (500,400))
 	pygame.display.flip()
+
 
 
 
