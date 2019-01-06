@@ -90,8 +90,8 @@ def stage1():
 	hpbar = pygame.image.load("HPbar_2.png")
 
 	#加聲音
-	hit  = pygame.mixer.Sound("correct.wav")
-	crash = pygame.mixer.Sound("wrong.wav")
+	hit  = pygame.mixer.Sound("correct.ogg")
+	crash = pygame.mixer.Sound("wrong.ogg")
 	song = pygame.mixer.music.load("ntu.mp3")
 	def gameDisplay_refresh(num):
 		gameDisplay.fill(0)
