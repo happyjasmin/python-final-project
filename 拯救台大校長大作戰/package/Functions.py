@@ -9,7 +9,42 @@ import math
 #from package.Class import 
 #os.chdir('')  #圖片聲音檔所在目錄
 
+#hint
+def HINT():
+	screen.fill(0)
+	music = press
+	screen.blit(sky, (0,0))
+	screen.blit(background, (100,65))
+	screen.blit(button,(540,158))
+	screen.blit(music, (474,530))
+	screen.blit(life, (30,100))
+	screen.blit(hpbar,(20,10))
+	screen.blit(gpapic,(0,0))
+	pygame.display.flip()
 
+def HINT2():
+	screen.fill(0)
+	music = space
+	screen.blit(sky, (0,0))
+	screen.blit(background, (100,65))
+	screen.blit(button,(540,158))
+	screen.blit(music, (474,530))
+	screen.blit(life, (30,100))
+	screen.blit(hpbar,(20,10))
+	screen.blit(gpapic,(0,0))
+	pygame.display.flip()
+
+#screen refresh
+def screen_refresh():
+	screen.fill(0)
+	screen.blit(sky, (0,0))
+	screen.blit(background, (100,65))
+	screen.blit(button,(540,158))
+	screen.blit(music, (474,530))
+	screen.blit(life, (30,100))
+	screen.blit(hpbar,(20,10))
+	screen.blit(gpapic,(0,0))
+	pygame.display.flip()
 
 
 ##################################      for Stage2        #####################################
