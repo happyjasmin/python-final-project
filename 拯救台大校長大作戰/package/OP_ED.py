@@ -218,7 +218,7 @@ def Opening_Trailer3():
 	introText=text('Dodge all the three treasures!',28,black,420,600)
 	
 	stage3Img = pygame.image.load("stage3.png") 
-	stage3Img = pygame.transform.scale(stage2Img, (500, 400))
+	stage3Img = pygame.transform.scale(stage3Img, (500, 400))
 	ZhoushanRiverImg = pygame.image.load("ZhoushanRiver.png")
 	ZhoushanRiverImg = pygame.transform.scale(ZhoushanRiverImg, (400, 240))
 	buttonImg = pygame.image.load("button.png") 

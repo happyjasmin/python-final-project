@@ -56,10 +56,58 @@ def set_to_origin(objects,change_speed_x,change_speed_y): ## defines area that t
 		objects.x = random.randrange(1280,3200)
 		objects.movespeed -= change_speed_x
 		objects.movespeed_y -= change_speed_y
+###############################################################################################
 ##################################      for Stage3        #####################################
-#os.chdir('') #package資料夾所在目錄
-#from package.Class import 
+###############################################################################################
+os.chdir('D:/PBC') #package資料夾所在目錄
+import os, sys, random
+import pygame 
+from pygame.locals import *
+import logging
+import random  
+import os
+import math
+from package.Class import Background,Box,Circle
 #os.chdir('')  #圖片聲音檔所在目錄
+canvas_width = 1280
+canvas_height = 650
+ 
+# 背景顏色.
+#block = (255,250,240)
+BackGround = Background(0,[0,0]) ####背景圖
+
+# 磚塊數量串列.
+bricks_list = []
+ 
+# 移動速度.
+dx =  7
+dy = -7
+ 
+# 遊戲狀態.
+# 0:等待開球
+# 1:遊戲進行中
+game_mode = 0
+def isCollision( x, y, boxRect):
+	if (x >= boxRect[0] and x <= boxRect[0] + boxRect[2] and y >= boxRect[1] and y <= boxRect[1] + boxRect[3]):
+		return True;		  
+	return False;  
+def resetGame():
+	# 宣告使用全域變數.
+	global game_mode, brick_num, bricks_list, dx, dy
+ 
+	# 磚塊
+	for bricks in bricks_list:
+		# 亂數磚塊顏色
+		bricks.color = [255,255,255]		  
+		# 開啟磚塊.
+		bricks.visivle = True
+	# 0:等待開球
+	game_mode = 0
+	# 磚塊數量.
+	brick_num = 120	 
+	# 移動速度.
+	dx =  7
+	dy = -7
 
 
 
