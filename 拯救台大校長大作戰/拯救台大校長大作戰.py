@@ -4,7 +4,7 @@ import time
 import random  
 import os
 import math
-os.chdir('D:/PBC') #package資料夾所在目錄
+os.chdir('C:\\Users\\user\\Documents\\GitHub\\test\\拯救台大校長大作戰') #package資料夾所在目錄
 
 ##################################      for Stage1        #####################################
 #不要寫from sample_module import * 避免名稱衝突沒發現

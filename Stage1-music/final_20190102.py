@@ -1,5 +1,4 @@
-
-
+import random 
 import os
 import pygame
 from pygame.locals import *
@@ -7,7 +6,7 @@ import time
 
 
 
-os.chdir('C:\\Users\\family\\Documents\\GitHub\\python-final-project\\Stage1-music')
+os.chdir('C:\\Users\\user\\Documents\\GitHub\\test\\Stage1-music')
 
 pygame.init()
 
@@ -36,6 +35,46 @@ pas	    = pygame.image.load("object\\pass.png")
 sky 	= pygame.image.load("object\\sky.png")
 background 	= pygame.image.load("object\\fubell.png")
 
+#gpa
+gpa = 4.3
+class figure():
+	def __init__(self,x,y,width,height):
+		self.x=x
+		self.y=y
+		self.width=width
+		self.height=height
+	def set(self,img):
+		gameDisplay.blit(img,(self.x,self.y))
+		
+class text():
+	def __init__(self,content,size,color,x,y):
+
+		self.content=content
+		self.size=size
+		self.color=color
+		self.x=x
+		self.y=y
+
+	def set(self,position):
+		now_text=pygame.font.Font("freesansbold.ttf",self.size)
+		now_text=now_text.render(self.content,True,self.color)
+		now_text_rect=now_text.get_rect()
+
+		if position=="Center": ## 置中
+			now_text_rect.center=(self.x-(1/2)*now_text_rect.width,self.y)
+		elif position=="Right": ##如果text是在最右邊的話，要把它自己的長度扣掉，完整顯現
+			now_text_rect.center=(self.x-now_text_rect.width,self.y)
+		elif position=="None":  #不用管，左上角即代表x,y coordinate
+			now_text_rect.center=(self.x,self.y)
+
+		gameDisplay.blit(now_text,now_text_rect.center)
+gpaImg = pygame.image.load("object\\GPA.png")
+gpa_icon=figure(30,50,96,96)
+now_gpa=text(str(gpa),60,(0,0,0),gpa_icon.width+96,gpa_icon.height)
+gameDisplay = pygame.display.set_mode((display_width, display_height))
+
+
+
 #提示鍵
 #hint0	= pygame.image.load("object\\blue.png")
 #要按了的提示鍵變色
@@ -52,9 +91,9 @@ space = pygame.transform.scale(space,(400,50))
 press = pygame.transform.scale(press,(400,50))
 
 #加聲音
-hit  = pygame.mixer.Sound("sound\\correct.wav")
-crash = pygame.mixer.Sound("sound\\wrong.wav")
-song = pygame.mixer.music.load("sound\\ntu.mp3")
+hit  = pygame.mixer.Sound("sound\\sound\\correct.wav")
+crash = pygame.mixer.Sound("sound\\sound\\wrong.wav")
+song = pygame.mixer.music.load("sound\\sound\\ntu.mp3")
 
 
 hit.set_volume(50)
@@ -67,7 +106,7 @@ keys = False
 #使用者未按任何按鍵的預設狀態
 music 	= play
 gamestart = False
-gpa = 4.3
+
 #hint = hint0
 
 
@@ -208,6 +247,7 @@ while 1 :
 
 	while gamestart and gpa > 0:
 		
+				
 		start = 0
 			
 		#song.play()
@@ -302,13 +342,17 @@ while 1 :
 				if event.key == pygame.K_SPACE :
 					keys = False
 					
-			"""	
-			if event.type == pygame.MOUSEBUTTONDOWN and 500 <= event.pos[0] <= (500+351) and 500 <= event.pos[1] <= (500+153) :
+
+			###gpa
+			for i in range(0,int(math.floor(float(now_gpa.content)/0.5))):
+				hpbar = figure( gpa_icon.x+50*(i+1) , gpa_icon.y , 96 , 96)
+				hpbar.set(hpbarImg)
 				
-				clickbutton = True
-				playing = False
-			"""
-			
+			if float(now_gpa.content)<2.5:
+				now_gpa.color=red
+			else:
+				now_gpa.color=black
+	
 			
 			if gpa < 0 :
 								
@@ -326,6 +370,9 @@ while 1 :
 
 			pygame.display.flip()
 			
+			
+		gpa_icon.set(gpaImg)			
+		now_gpa.set("None")
 			
 			
 
