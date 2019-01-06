@@ -384,3 +384,28 @@ def	Failure_screen3():
 			stage2()
 			
 		pygame.display.update()
+
+
+def	Final_scene():
+
+	# text
+	#def __init__(self,content,size,color,x,y):
+	final_gpa = text("Your final GPA is "+str(gpa_init.mean()),50,red,display_width/2,display_height/2)
+	quitting=False
+
+
+	while not quitting:	
+		gameDisplay.fill(black)	
+		final_gpa.set('Center')
+
+		for event in pygame.event.get():    #it gets any event that happens...movenment of mouse or clicking etc
+			
+			if event.type == pygame.QUIT:   # when we will click X it will quit the window
+				logging.info("X is pressed, will quit")
+				pygame.quit()
+				quit()
+
+		pygame.display.update()
+
+
+
