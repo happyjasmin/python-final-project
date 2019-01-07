@@ -13,7 +13,7 @@ class calculate_gpa():
 		self.allgpa=allgpa
 
 	def add(self,new_gpa):
-		self.allgpa.append(new_gpa)
+		self.allgpa.append(float(new_gpa))
 
 	def mean(self):
  		mean_gpa=sum(self.allgpa)/len(self.allgpa)

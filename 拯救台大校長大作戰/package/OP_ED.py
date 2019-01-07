@@ -388,7 +388,7 @@ def	Failure_screen3():
 		pygame.display.update()
 
 
-def	Final_scene():
+def	Final_scene(gpa_init):
 
 	# text
 	#def __init__(self,content,size,color,x,y):
@@ -413,14 +413,18 @@ def	Final_scene():
 	else:
 		final_grade='c-'
 
-
-	final_gpa = text("Your final GPA is "+final_grade,50,red,display_width/2,display_height/2)
+	final_background=figure(0,0,1280,960)
+	final_gpa = text("Your final GPA is "+final_grade,50,red,display_width/2,display_height/2+160)
+	final_backgroundImg = pygame.image.load("final_background.png")
+	final_backgroundImg = pygame.transform.scale(final_backgroundImg,(1280,960))
+	
 	quitting=False
-
 	while not quitting:	
-		gameDisplay.fill(black)	
+		gameDisplay.fill(black)
+		final_background.set(final_backgroundImg)
+		time.sleep(3)
 		final_gpa.set('Center')
-
+		
 		for event in pygame.event.get():    #it gets any event that happens...movenment of mouse or clicking etc
 			
 			if event.type == pygame.QUIT:   # when we will click X it will quit the window

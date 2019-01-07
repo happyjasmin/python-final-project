@@ -13,6 +13,7 @@ import numpy
 import sched
 import threading
 from package.Class import calculate_gpa
+
 os.chdir('D:/PBC') #package資料夾所在目錄
 
 pygame.init()
@@ -784,7 +785,7 @@ def stage2():
 
 
 
-		if time_running>50:
+		if time_running>130:
 			now_time.color=red
 			print("Clock turned red.......")
 
@@ -883,11 +884,12 @@ def stage3():
 	def stage3_pass():
 		bye_1=text("Your Grade for Stage3 is "+str('%.2f' % gpa_3),50,(227,23,13),640,200)
 		#bye_2=text("Your Grade: "+str(final_grade),50,(227,23,13),640,400)
-		while True:
-			gameDisplay.fill((0,0,0))
-			bye_1.set("Center")
-			#bye_2.set("Center")
-			pygame.display.update()
+
+		gameDisplay.fill((0,0,0))
+		bye_1.set("Center")
+		#bye_2.set("Center")
+		pygame.display.update()
+		time.sleep(3)
 			
 
 
@@ -1047,8 +1049,8 @@ def stage3():
 		pygame.display.update()
 		clock.tick(10000000)
 	
-	gpa_init.add(new_gpa)
-	
+	gpa_init.add(gpa_3)
+	OP_ED.Final_scene(gpa_init)
 
 
 

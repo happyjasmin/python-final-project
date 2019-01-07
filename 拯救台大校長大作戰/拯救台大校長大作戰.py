@@ -43,7 +43,7 @@ stage3()
 #Ending_Trailer3()
 
 ##################################      for ending        #####################################
-Final_scene()
+#Final_scene() #我把他加入stage3後面了
 
 pygame.quit()
 logging.info("Quitting.........")
